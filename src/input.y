@@ -17,17 +17,18 @@
   int y_error;
   char y_mensaje[100];
 
-  extern FILE   *yyin;
-  int yylex(void);
-  int yyerror(char *s);
-  void yyrestart(FILE *);
-  
+  extern FILE   *yyin;   /* File used by lex to read the file */
+
+  extern int   yylex(void);
+  extern void  yyrestart(FILE *);
+  int          yyerror(char *s);
+
   int linenumber;
   
   #define DEBUG
 
 #define SALIR  num_tareas=-1; \
-  num_recursos=0; \
+  num_recursos=0; \     
 
 
 
@@ -130,7 +131,7 @@ b_atributos:  PERIODO '=' NUM b_atributos
 
 b_patron_uso:  '['  NUM  ',' NUM ']' 
              {
-	       // Solo para hacerlo un poco más legible 
+	       // Solo para hacerlo un poco mï¿½s legible 
 	       int *r = &Tareas[num_tareas].Nsubtareas;
 	       if (*r >= MAX_SUBTAREAS){
 		 if (y_error == -1){
@@ -142,7 +143,7 @@ b_patron_uso:  '['  NUM  ',' NUM ']'
 	       if ($2 > num_recursos){
 		 if (y_error == -1){
 		   y_error=$2;
-		   sprintf(y_mensaje,"Recurso %d no definido\nen línea %d",$2,linenumber);
+		   sprintf(y_mensaje,"Recurso %d no definido\nen lï¿½nea %d",$2,linenumber);
 		 }
 		 SALIR;
 	       }
@@ -163,7 +164,7 @@ b_patron_uso:  '['  NUM  ',' NUM ']'
 int  yyerror(char *s){
   if (y_error == -1 ){
     y_error=0;
-    sprintf(y_mensaje,"Error: %s\nEn la línea %d",s,linenumber);
+    sprintf(y_mensaje,"Error: %s\nEn la lï¿½nea %d",s,linenumber);
   }
  SALIR;
   //  return;

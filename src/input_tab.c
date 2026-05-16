@@ -87,22 +87,23 @@
   int y_error;
   char y_mensaje[100];
 
-  extern FILE   *yyin;
-  int yylex(void);
-  int yyerror(char *s);
-  void yyrestart(FILE *);
-  
+  extern FILE   *yyin;   /* File used by lex to read the file */
+
+  extern int   yylex(void);
+  extern void  yyrestart(FILE *);
+  int          yyerror(char *s);
+
   int linenumber;
   
   #define DEBUG
 
 #define SALIR  num_tareas=-1; \
-  num_recursos=0; \
+  num_recursos=0; \     
 
 
 
 
-#line 106 "input_tab.c"
+#line 107 "input.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -125,61 +126,7 @@
 #  endif
 # endif
 
-
-/* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
-extern int yydebug;
-#endif
-
-/* Token kinds.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
-  {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    NUM = 258,                     /* NUM  */
-    TAREA = 259,                   /* TAREA  */
-    RECURSO = 260,                 /* RECURSO  */
-    CPU = 261,                     /* CPU  */
-    OFFSET = 262,                  /* OFFSET  */
-    PERIODO = 263,                 /* PERIODO  */
-    PRIORIDAD = 264,               /* PRIORIDAD  */
-    IDEN = 265                     /* IDEN  */
-  };
-  typedef enum yytokentype yytoken_kind_t;
-#endif
-
-/* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-union YYSTYPE
-{
-#line 38 "input.y"
-
-  long  ivalue;
-  char  *cvalue;
-
-#line 168 "input_tab.c"
-
-};
-typedef union YYSTYPE YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
-#endif
-
-
-extern YYSTYPE yylval;
-
-
-int yyparse (void);
-
-
-
+#include "input.tab.h"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -598,9 +545,9 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    52,    52,    52,    54,    54,    55,    58,    58,    59,
-      63,    84,    83,   101,   104,   111,   118,   125,   132,   131,
-     157
+       0,    53,    53,    53,    55,    55,    56,    59,    59,    60,
+      64,    85,    84,   102,   105,   112,   119,   126,   133,   132,
+     158
 };
 #endif
 
@@ -1179,55 +1126,55 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* $@1: %empty  */
-#line 52 "input.y"
+#line 53 "input.y"
                       {}
-#line 1185 "input_tab.c"
+#line 1132 "input.tab.c"
     break;
 
   case 3: /* b_inicio: b_recursos $@1 b_tareas  */
-#line 52 "input.y"
+#line 53 "input.y"
                                    {}
-#line 1191 "input_tab.c"
+#line 1138 "input.tab.c"
     break;
 
   case 4: /* $@2: %empty  */
-#line 54 "input.y"
+#line 55 "input.y"
                          {}
-#line 1197 "input_tab.c"
+#line 1144 "input.tab.c"
     break;
 
   case 5: /* b_recursos: b_recursos $@2 b_linea_recurso  */
-#line 54 "input.y"
+#line 55 "input.y"
                                             {}
-#line 1203 "input_tab.c"
+#line 1150 "input.tab.c"
     break;
 
   case 6: /* b_recursos: %empty  */
-#line 55 "input.y"
+#line 56 "input.y"
            {}
-#line 1209 "input_tab.c"
+#line 1156 "input.tab.c"
     break;
 
   case 7: /* $@3: %empty  */
-#line 58 "input.y"
+#line 59 "input.y"
                     {}
-#line 1215 "input_tab.c"
+#line 1162 "input.tab.c"
     break;
 
   case 8: /* b_tareas: b_tareas $@3 b_linea_tarea  */
-#line 58 "input.y"
+#line 59 "input.y"
                                      {}
-#line 1221 "input_tab.c"
+#line 1168 "input.tab.c"
     break;
 
   case 9: /* b_tareas: %empty  */
-#line 59 "input.y"
+#line 60 "input.y"
          {}
-#line 1227 "input_tab.c"
+#line 1174 "input.tab.c"
     break;
 
   case 10: /* b_linea_recurso: RECURSO IDEN  */
-#line 64 "input.y"
+#line 65 "input.y"
                 {
 		  if (num_recursos++ >= MAX_RECURSOS){
 		    
@@ -1243,11 +1190,11 @@ yyreduce:
 #endif
 		  strncpy(Recursos[num_recursos].nombre,(yyvsp[0].cvalue),90);
 		}
-#line 1247 "input_tab.c"
+#line 1194 "input.tab.c"
     break;
 
   case 11: /* $@4: %empty  */
-#line 84 "input.y"
+#line 85 "input.y"
                { 
 		 if (num_tareas++ >= MAX_TAREAS){
 		   if (y_error == -1){
@@ -1265,58 +1212,58 @@ yyreduce:
 		 Tareas[num_tareas].Nsubtareas=Tareas[num_tareas].prioridad=0;
 
 	       }
-#line 1269 "input_tab.c"
+#line 1216 "input.tab.c"
     break;
 
   case 13: /* b_linea_tarea: %empty  */
-#line 101 "input.y"
+#line 102 "input.y"
   {}
-#line 1275 "input_tab.c"
+#line 1222 "input.tab.c"
     break;
 
   case 14: /* b_atributos: PERIODO '=' NUM b_atributos  */
-#line 105 "input.y"
+#line 106 "input.y"
               { 
 #ifdef DEBUG
 		printf("Periodo= %d ",(yyvsp[-1].ivalue));
 #endif
 		Tareas[num_tareas].periodo = (tiempo_t) (yyvsp[-1].ivalue);
 	      }
-#line 1286 "input_tab.c"
+#line 1233 "input.tab.c"
     break;
 
   case 15: /* b_atributos: OFFSET '=' NUM b_atributos  */
-#line 112 "input.y"
+#line 113 "input.y"
               {
 #ifdef DEBUG
 		printf("Offset= %d ",(yyvsp[-1].ivalue));
 #endif
 		Tareas[num_tareas].llegada = (tiempo_t) (yyvsp[-1].ivalue);
 	      }
-#line 1297 "input_tab.c"
+#line 1244 "input.tab.c"
     break;
 
   case 16: /* b_atributos: PRIORIDAD '=' NUM b_atributos  */
-#line 119 "input.y"
+#line 120 "input.y"
               {
 #ifdef DEBUG
 		printf("Prio= %d ",(yyvsp[-1].ivalue));
 #endif
 		Tareas[num_tareas].prioridad = (yyvsp[-1].ivalue);
 	      }
-#line 1308 "input_tab.c"
+#line 1255 "input.tab.c"
     break;
 
   case 17: /* b_atributos: %empty  */
-#line 125 "input.y"
+#line 126 "input.y"
                {}
-#line 1314 "input_tab.c"
+#line 1261 "input.tab.c"
     break;
 
   case 18: /* $@5: %empty  */
-#line 132 "input.y"
+#line 133 "input.y"
              {
-	       // Solo para hacerlo un poco más legible 
+	       // Solo para hacerlo un poco mï¿½s legible 
 	       int *r = &Tareas[num_tareas].Nsubtareas;
 	       if (*r >= MAX_SUBTAREAS){
 		 if (y_error == -1){
@@ -1328,7 +1275,7 @@ yyreduce:
 	       if ((yyvsp[-3].ivalue) > num_recursos){
 		 if (y_error == -1){
 		   y_error=(yyvsp[-3].ivalue);
-		   sprintf(y_mensaje,"Recurso %d no definido\nen línea %d",(yyvsp[-3].ivalue),linenumber);
+		   sprintf(y_mensaje,"Recurso %d no definido\nen lï¿½nea %d",(yyvsp[-3].ivalue),linenumber);
 		 }
 		 SALIR;
 	       }
@@ -1340,17 +1287,17 @@ yyreduce:
 	       Tareas[num_tareas].subtarea[*r].tiempo = (yyvsp[-1].ivalue);
 	       (*r)++;
 	     }
-#line 1344 "input_tab.c"
+#line 1291 "input.tab.c"
     break;
 
   case 20: /* b_patron_uso: %empty  */
-#line 157 "input.y"
+#line 158 "input.y"
                {}
-#line 1350 "input_tab.c"
+#line 1297 "input.tab.c"
     break;
 
 
-#line 1354 "input_tab.c"
+#line 1301 "input.tab.c"
 
       default: break;
     }
@@ -1543,13 +1490,13 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 161 "input.y"
+#line 162 "input.y"
 
 
 int  yyerror(char *s){
   if (y_error == -1 ){
     y_error=0;
-    sprintf(y_mensaje,"Error: %s\nEn la línea %d",s,linenumber);
+    sprintf(y_mensaje,"Error: %s\nEn la lï¿½nea %d",s,linenumber);
   }
  SALIR;
   //  return;

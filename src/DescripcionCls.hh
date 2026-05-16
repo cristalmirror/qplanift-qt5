@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: DescripcionCls.hh
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Declaraciï¿½n de la clase 'DescripcionCls'
+//  Descripción: 
+// 	 Declaración de la clase 'DescripcionCls'
 // 
 // *************************************************************************
 
@@ -33,7 +33,7 @@
 class DescripcionCls
 {
 public:
-  // Genera una lista de eventos con la descripciï¿½n de cada tarea
+  // Genera una lista de eventos con la descripción de cada tarea
   void			Descripcion 
   (
    tarea_c *		tbl_tareas,

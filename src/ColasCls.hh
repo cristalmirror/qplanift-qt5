@@ -36,9 +36,7 @@ typedef
 std::queue<tarea_activa_t*>
 cola_fifo_c;
 
-struct menor_llegada
-  : public std::binary_function<tarea_activa_t*, tarea_activa_t*, bool> 
-{
+struct menor_llegada {
   bool operator()(tarea_activa_t* t1, tarea_activa_t* t2) const 
     { 
       return (t1->llegada > t2->llegada || 
@@ -47,9 +45,7 @@ struct menor_llegada
     }
 };
 
-struct menor_prioridad 
-  : public std::binary_function<tarea_activa_t*, tarea_activa_t*, bool> 
-{
+struct menor_prioridad {
   bool operator()(tarea_activa_t* t1, tarea_activa_t* t2) const 
     { 
       return (t1->prioridad > t2->prioridad || 
@@ -61,9 +57,7 @@ struct menor_prioridad
     }
 };
 
-struct menor_computo 
-  : public std::binary_function<tarea_activa_t*, tarea_activa_t*, bool> 
-{
+struct menor_computo {
   bool operator()(tarea_activa_t* t1, tarea_activa_t* t2) const 
     { 
       return (t1->computo > t2->computo || 

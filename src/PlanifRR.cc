@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: PlanifRR.cc
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Implementaciï¿½nde la clase 'PlanifRR'
+//  Descripción: 
+// 	 Implementaciónde la clase 'PlanifRR'
 // 
 // *************************************************************************
 
@@ -28,7 +28,7 @@
 
 // *** Definiciones Externas **********************************
 
-// *** Mï¿½todos Pï¿½blicos ***************************************
+// *** Métodos Públicos ***************************************
 
 // *** PlanifRR::TareaNueva
 // Informa al planificador de la llegada de una nueva tarea
@@ -45,7 +45,7 @@ int PlanifRR::TareaNueva
 	 tarea->computo);
 #endif
   
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   cl_preparadas.push(tarea);
 
@@ -55,7 +55,7 @@ int PlanifRR::TareaNueva
 
 
 // *** PlanifRR::SiguienteActivacion
-// Indica cuando se debe realizar la nueva activaciï¿½n
+// Indica cuando se debe realizar la nueva activación
 
 tiempo_t PlanifRR::SiguienteActivacion 
 ( 
@@ -65,7 +65,7 @@ tiempo_t PlanifRR::SiguienteActivacion
 {
   tiempo_t		instante;
 
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (!cl_preparadas.empty())
     if (procesador.EstaLibre())
@@ -84,7 +84,7 @@ tiempo_t PlanifRR::SiguienteActivacion
 
 #ifdef DEBUG_RR
   if (instante < MAX_TIEMPO)
-    fprintf(stderr, "Previsiï¿½n(%ld): %d (A: %ld C: %ld)" 
+    fprintf(stderr, "Previsión(%ld): %d (A: %ld C: %ld)" 
 	    "  T: %ld  Q: %ld  Ej: %ld\n", 
 	    instante,
 	    cl_preparadas.top()->ident,
@@ -105,11 +105,11 @@ tiempo_t PlanifRR::SiguienteActivacion
 
 tarea_activa_t * PlanifRR::BorraSiguiente ( )
 {
-  // *** Objetos Locales. Inicializaciï¿½n
+  // *** Objetos Locales. Inicialización
 
   tarea_activa_t *	sig_tarea;
 
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (!cl_preparadas.empty())
     {
@@ -121,7 +121,7 @@ tarea_activa_t * PlanifRR::BorraSiguiente ( )
 
 #ifdef DEBUG_RR
   if (sig_tarea != NULL)
-    fprintf(stderr, "  Activaciï¿½n: %d (A: %d C: %d)\n", 
+    fprintf(stderr, "  Activación: %d (A: %d C: %d)\n", 
 	    sig_tarea->ident,
 	    sig_tarea->llegada,
 	    sig_tarea->computo);
@@ -134,17 +134,17 @@ tarea_activa_t * PlanifRR::BorraSiguiente ( )
 
 // *** PlanifRR::TareaExpulsada
 // Informa al planificador que la tarea expulsada todavia le queda
-// tiempo de cï¿½mputo
+// tiempo de cómputo
 
 int PlanifRR::TareaExpulsada 
 ( 
  tarea_activa_t *	tarea
  )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
 #ifdef DEBUG_RR
-  fprintf(stderr, "  Expulsiï¿½n: %d (A: %d C: %d)\n", 
+  fprintf(stderr, "  Expulsión: %d (A: %d C: %d)\n", 
 	 tarea->ident,
 	 tarea->llegada,
 	 tarea->computo);
@@ -164,5 +164,5 @@ PlanifRR::~PlanifRR ()
 
 } // end PlanifRR::~PlanifRR
 
-// *** Mï¿½todos Privados ***************************************
+// *** Métodos Privados ***************************************
 

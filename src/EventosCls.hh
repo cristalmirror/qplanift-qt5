@@ -144,8 +144,7 @@ public:
 typedef std::list<evento_c> lista_eventos_c;
 
 // Transforma un evento normal en una lista de eventos unitarios
-struct trocea_eventos : public std::unary_function<evento_c, void> 
-{
+struct trocea_eventos {
   trocea_eventos(lista_eventos_c& lista_eventos)
     : lst_eventos(lista_eventos) 
     {   lst_eventos.erase(lst_eventos.begin(),lst_eventos.end());
@@ -176,9 +175,7 @@ struct trocea_eventos : public std::unary_function<evento_c, void>
 
 // Ordenaci�n de eventos unitarios
 
-struct menor_evento 
-  : public std::binary_function<evento_c, evento_c, bool> 
-{
+struct menor_evento {
   bool operator()(const evento_c& e1, const evento_c& e2) const 
     { 
       return (e1.Inicio() < e2.Inicio() || 

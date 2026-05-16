@@ -1,15 +1,19 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <QCheckBox>
 #include <QMainWindow>
+#include <QCheckBox>
 #include <QComboBox>
 #include <QSpinBox>
-#include <QTextEdit>
+#include <QToolBar>
+#include <QMenu>
+#include <QAction>
 #include "tipos.h"
+
 #include "canvas.hh"
 #include "SistemaCls.hh"
 #include "EventosCls.hh"
+
 #include "PlanifFCFS.hh"
 #include "PlanifSJF.hh"
 #include "PlanifSRTF.hh"
@@ -20,10 +24,7 @@
 #include "ayuda.hh"
 #include "editor.hh"
 
-class QToolBar;
-class QMenu;
-
-class Planificador : public QMainWindow
+class Planificador: public QMainWindow
 {
     Q_OBJECT
 public:
@@ -34,14 +35,18 @@ signals:
     void tareasNuevas(int);
     void ParseErrorEn(int);
 
+public slots:
+    void cargar(const char *);
+
 private slots:
     void newDoc();
     void cargar();
-    void cargar(const char *);
     void closeDoc();
+
     void toggleStatusBar();
     void toggleHerrBar();
     void togglePaso(bool);
+
     void planificador_elegido(int);
     void recurso_elegido(int);
     void actualiza(bool hay=true);
@@ -53,18 +58,19 @@ private slots:
     void aboutQt();
 
 protected:
-    void closeEvent(QCloseEvent *);
+  void closeEvent( QCloseEvent * );
 
 private:
-    Canvas    *canvas;
-    QToolBar  *controlTools;
-    QToolBar  *pasoTools;
-    QMenu     *controls;
+    Canvas   *canvas;
+
+    QToolBar *controlTools;
+    QToolBar *pasoTools;
+    QMenu    *controls;
+    QAction  *toggleHerrAction;
+    QAction  *toggleStatusAction;
     QCheckBox *paso;
     QSpinBox  *seleccion_quantum;
     QSpinBox  *seleccion_paso;
-    QAction   *thAction;
-    QAction   *sbAction;
 
     int politica_planificador_actual;
     int politica_recurso_actual;
@@ -73,8 +79,9 @@ private:
     static Editor *editor;
 
     SimuladorCls Simulator;
-    EventosCls       lst_eventos;
-    lista_eventos_c  lst_ord_eventos;
+
+    EventosCls      lst_eventos;
+    lista_eventos_c lst_ord_eventos;
     int num_lect;
 };
 

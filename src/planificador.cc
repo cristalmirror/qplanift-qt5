@@ -1,5 +1,6 @@
 #include "planificador.hh"
 #include <algorithm>
+
 #include "SistemaCls.hh"
 #include "EventosCls.hh"
 #include "PlanifFCFS.hh"
@@ -12,9 +13,9 @@
 #include <QCheckBox>
 #include <QPixmap>
 #include <QToolBar>
+#include <QToolButton>
 #include <QMenu>
 #include <QMenuBar>
-#include <QTextEdit>
 #include <QFile>
 #include <QFileDialog>
 #include <QStatusBar>
@@ -25,315 +26,370 @@
 #include <QToolTip>
 #include <QSpinBox>
 #include <QLabel>
+#include <QComboBox>
 #include <QList>
 
-extern "C" { int Parsea_fichero(char *); }
+#include "fileopen.xpm"
+#include "tareas.xpm"
+
+extern "C" {int Parsea_fichero(const char *);}
 
 typedef QList<Planificador*> PlanificadorList;
 static PlanificadorList *spawnedPlanificadores = 0;
 
+
 Planificador::Planificador(int contador)
-    : QMainWindow(0)
+    : QMainWindow( 0 )
 {
+    QPixmap openIcon, tareaIcon;
+    QComboBox *seleccion_planificadores;
+    QComboBox *seleccion_recursos;
     int x;
 
     politica_planificador_actual = 0;
-    politica_recurso_actual = 0;
-    quantum_actual = 1;
+    politica_recurso_actual      = 0;
+    quantum_actual               = 1;
 
     if (editor == 0)
-        editor = new Editor(NULL, "Editor");
+      editor = new Editor(NULL, "Editor");
 
     if (num_tareas)
-        Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
-                         Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
+      Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
+                       Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
 
     canvas = new Canvas(this, "Canvas");
     canvas->setFocus();
-    setCentralWidget(canvas);
+    setCentralWidget( canvas );
+    connect( canvas, SIGNAL(hayQueRedibujar(bool)), this, SLOT(actualiza(bool)) );
 
-    connect(canvas, SIGNAL(hayQueRedibujar(bool)), this, SLOT(actualiza(bool)));
+    openIcon  = QPixmap( fileopen );
+    tareaIcon = QPixmap( tareas );
 
-    // Toolbar paso a paso
-    pasoTools = new QToolBar("Pasos", this);
-    addToolBar(pasoTools);
-    paso = new QCheckBox("Ejecucion paso a paso", pasoTools);
-    pasoTools->addWidget(paso);
+    // --- Toolbar: paso a paso ---
+    pasoTools = addToolBar("Pasos");
+    paso = new QCheckBox("Ejecución paso a paso");
     paso->setChecked(true);
-    pasoTools->addWidget(new QLabel("   Instante ", pasoTools));
-    seleccion_paso = new QSpinBox(pasoTools);
+    paso->setToolTip("Ejecución paso a paso\no ejecución completa");
+    pasoTools->addWidget(paso);
+
+    QLabel *lbl_instante = new QLabel("   Instante ");
+    lbl_instante->setToolTip("Tiempo de Simulación");
+    pasoTools->addWidget(lbl_instante);
+
+    seleccion_paso = new QSpinBox();
     seleccion_paso->setRange(1, 10000);
     seleccion_paso->setSingleStep(1);
+    seleccion_paso->setToolTip("Instante de Simulación");
+    seleccion_paso->setEnabled(true);
     pasoTools->addWidget(seleccion_paso);
 
-    connect(seleccion_paso, SIGNAL(valueChanged(int)), this, SLOT(setPaso(int)));
-    connect(paso, SIGNAL(toggled(bool)), seleccion_paso, SLOT(setEnabled(bool)));
-    connect(paso, SIGNAL(toggled(bool)), this, SLOT(togglePaso(bool)));
+    connect( seleccion_paso, SIGNAL(valueChanged(int)), this, SLOT(setPaso(int)) );
+    connect( paso, SIGNAL(toggled(bool)), seleccion_paso, SLOT(setEnabled(bool)) );
+    connect( paso, SIGNAL(toggled(bool)), this, SLOT(togglePaso(bool)) );
 
-    // Toolbar controles
-    controlTools = new QToolBar("Herramientas", this);
-    addToolBar(controlTools);
+    // --- Toolbar: controles ---
+    controlTools = addToolBar("Herramientas");
 
-    QComboBox *seleccion_planificadores = new QComboBox(controlTools);
-    controlTools->addWidget(seleccion_planificadores);
+    seleccion_planificadores = new QComboBox();
     char **NombrePlanificadores = Simulator.PlanifCPU();
-    for (x = 0; NombrePlanificadores[x]; x++)
-        seleccion_planificadores->addItem(NombrePlanificadores[x]);
-    connect(seleccion_planificadores, SIGNAL(activated(int)), SLOT(planificador_elegido(int)));
+    for (x=0; NombrePlanificadores[x]; x++)
+      seleccion_planificadores->addItem( NombrePlanificadores[x] );
+    connect( seleccion_planificadores, SIGNAL(activated(int)), SLOT(planificador_elegido(int)) );
+    seleccion_planificadores->setToolTip("Selecciona el planificador\na visualizar");
+    controlTools->addWidget(seleccion_planificadores);
 
-    QComboBox *seleccion_recursos = new QComboBox(controlTools);
-    controlTools->addWidget(seleccion_recursos);
+    seleccion_recursos = new QComboBox();
     NombrePlanificadores = Simulator.PlanifRecursos();
-    for (x = 0; NombrePlanificadores[x]; x++)
-        seleccion_recursos->addItem(NombrePlanificadores[x]);
-    connect(seleccion_recursos, SIGNAL(activated(int)), SLOT(recurso_elegido(int)));
+    for (x=0; NombrePlanificadores[x]; x++)
+      seleccion_recursos->addItem( NombrePlanificadores[x] );
+    connect( seleccion_recursos, SIGNAL(activated(int)), SLOT(recurso_elegido(int)) );
+    seleccion_recursos->setToolTip("Selecciona la política\nde gestión de recursos");
+    controlTools->addWidget(seleccion_recursos);
 
-    controlTools->addWidget(new QLabel("   Quantum ", controlTools));
-    seleccion_quantum = new QSpinBox(controlTools);
+    QLabel *lbl_quantum = new QLabel("   Quantum ");
+    lbl_quantum->setToolTip("Ajuste Quantum");
+    controlTools->addWidget(lbl_quantum);
+
+    seleccion_quantum = new QSpinBox();
     seleccion_quantum->setRange(1, 100);
     seleccion_quantum->setSingleStep(1);
-    controlTools->addWidget(seleccion_quantum);
-    connect(seleccion_quantum, SIGNAL(valueChanged(int)), this, SLOT(setQuantum(int)));
+    seleccion_quantum->setToolTip("Quantum del Sistema");
     seleccion_quantum->setEnabled(false);
+    connect( seleccion_quantum, SIGNAL(valueChanged(int)), this, SLOT(setQuantum(int)) );
+    controlTools->addWidget(seleccion_quantum);
 
-    controlTools->addWidget(new QLabel("   Grid ", controlTools));
-    QSpinBox *grid = new QSpinBox(controlTools);
+    QLabel *lbl_grid = new QLabel("   Grid ");
+    lbl_grid->setToolTip("Ajuste del grid");
+    controlTools->addWidget(lbl_grid);
+
+    QSpinBox *grid = new QSpinBox();
     grid->setRange(0, 100);
+    grid->setSingleStep(1);
+    grid->setToolTip("Ajuste del grid");
     grid->setValue(1);
     grid->setSpecialValueText("No grid");
+    connect( grid, SIGNAL(valueChanged(int)), canvas, SLOT(setGrid(int)) );
     controlTools->addWidget(grid);
-    connect(grid, SIGNAL(valueChanged(int)), canvas, SLOT(setGrid(int)));
 
-    controlTools->addWidget(new QLabel("   Zoom ", controlTools));
-    QSpinBox *zoom = new QSpinBox(controlTools);
+    QLabel *lbl_zoom = new QLabel("   Zoom ");
+    lbl_zoom->setToolTip("Ajuste del zoom");
+    controlTools->addWidget(lbl_zoom);
+
+    QSpinBox *zoom = new QSpinBox();
     zoom->setRange(0, 100);
+    zoom->setSingleStep(1);
+    zoom->setToolTip("Ajuste del zoom");
     zoom->setValue(20);
+    connect( zoom, SIGNAL(valueChanged(int)), canvas, SLOT(setZoom(int)) );
     controlTools->addWidget(zoom);
-    connect(zoom, SIGNAL(valueChanged(int)), canvas, SLOT(setZoom(int)));
 
-    // Menu Archivos
+    // --- Menú: Archivos ---
     QMenu *file = new QMenu("&Archivos", this);
     menuBar()->addMenu(file);
-    file->addAction("&Nueva ventana", this, SLOT(newDoc()), QKeySequence("Ctrl+N"));
-    file->addAction("&Abrir",         this, SLOT(cargar()), QKeySequence("Ctrl+A"));
-    file->addAction("&Editar",        editor, SLOT(show()), QKeySequence("Ctrl+E"));
+    file->addAction("&Nueva ventana", this, SLOT(newDoc()),     QKeySequence(Qt::CTRL+Qt::Key_N));
+    file->addAction(openIcon, "&Abrir", this, SLOT(cargar()),   QKeySequence(Qt::CTRL+Qt::Key_A));
+    file->addAction(tareaIcon, "&Editar", editor, SLOT(show()), QKeySequence(Qt::CTRL+Qt::Key_E));
     file->addSeparator();
-    file->addAction("&Cerrar", this, SLOT(closeDoc()), QKeySequence("Ctrl+W"));
-    file->addAction("&Salir",  qApp, SLOT(quit()),     QKeySequence("Ctrl+Q"));
+    file->addAction("&Cerrar", this, SLOT(closeDoc()),          QKeySequence(Qt::CTRL+Qt::Key_W));
+    file->addAction("&Salir",  qApp,  SLOT(quit()),             QKeySequence(Qt::CTRL+Qt::Key_Q));
 
-    // Menu Controles
+    // --- Menú: Controles ---
     controls = new QMenu("&Controles", this);
     menuBar()->addMenu(controls);
-    thAction = controls->addAction("Barra de &Herramientas", this, SLOT(toggleHerrBar()), QKeySequence("Ctrl+H"));
-    sbAction = controls->addAction("Barra de &Estado",       this, SLOT(toggleStatusBar()), QKeySequence("Ctrl+E"));
-    thAction->setCheckable(true); thAction->setChecked(true);
-    sbAction->setCheckable(true); sbAction->setChecked(true);
+
+    toggleHerrAction = controls->addAction("Barra de &Herramientas", this, SLOT(toggleHerrBar()),
+                                           QKeySequence(Qt::CTRL+Qt::Key_H));
+    toggleHerrAction->setCheckable(true);
+    toggleHerrAction->setChecked(true);
+
+    toggleStatusAction = controls->addAction("Barra de &Estado", this, SLOT(toggleStatusBar()),
+                                             QKeySequence(Qt::CTRL+Qt::Key_E));
+    toggleStatusAction->setCheckable(true);
+    toggleStatusAction->setChecked(true);
 
     menuBar()->addSeparator();
 
+    // --- Menú: Ayuda ---
     QMenu *ayuda = new QMenu("&Ayuda", this);
     menuBar()->addMenu(ayuda);
-    ayuda->addAction("&Autores",        this, SLOT(mostrarAutores()));
-    ayuda->addAction("&Temas de Ayuda", this, SLOT(mostrarAyuda()), QKeySequence(Qt::Key_F1));
+    ayuda->addAction("&Autores",          this, SLOT(mostrarAutores()));
+    ayuda->addAction("&Temas de Ayuda",   this, SLOT(mostrarAyuda()), QKeySequence(Qt::Key_F1));
     ayuda->addSeparator();
-    ayuda->addAction("Acerca de &Qt",   this, SLOT(aboutQt()));
+    ayuda->addAction("Acerca de &Qt",     this, SLOT(aboutQt()));
 
     statusBar()->showMessage("Preparado");
-
-    connect(this, SIGNAL(tareasNuevas(int)), this, SLOT(setTareasNuevas(int)));
-    connect(this, SIGNAL(ParseErrorEn(int)), editor, SLOT(RemarcaLinea(int)));
-    connect(editor, SIGNAL(re_carga(const char*)), this, SLOT(cargar(const char*)));
+    connect( this, SIGNAL(tareasNuevas(int)), this, SLOT(setTareasNuevas(int)) );
+    connect( this, SIGNAL(ParseErrorEn(int)), editor, SLOT(RemarcaLinea(int)) );
+    connect( editor, SIGNAL(re_carga(const char *)), this, SLOT(cargar(const char *)) );
 
     num_lect = contador;
 }
 
+
 Planificador::~Planificador() {
-    if (spawnedPlanificadores) {
-        spawnedPlanificadores->removeAll(this);
-        if (spawnedPlanificadores->count() == 0) {
-            delete spawnedPlanificadores;
-            spawnedPlanificadores = 0;
-        }
+  if ( spawnedPlanificadores ) {
+    spawnedPlanificadores->removeAll( this );
+    if ( spawnedPlanificadores->count() == 0 ) {
+      delete spawnedPlanificadores;
+      spawnedPlanificadores = 0;
     }
+  }
 }
+
 
 void Planificador::newDoc() {
-    if (!spawnedPlanificadores)
-        spawnedPlanificadores = new PlanificadorList;
-    Planificador *ed = new Planificador(num_lect);
-    spawnedPlanificadores->append(ed);
-    connect(this, SIGNAL(tareasNuevas(int)), ed, SLOT(setTareasNuevas(int)));
-    connect(ed,   SIGNAL(tareasNuevas(int)), this, SLOT(setTareasNuevas(int)));
-    ed->show();
+  if ( !spawnedPlanificadores )
+    spawnedPlanificadores = new PlanificadorList;
+
+  Planificador *ed = new Planificador(num_lect);
+  spawnedPlanificadores->append( ed );
+
+  connect( this, SIGNAL(tareasNuevas(int)), ed,   SLOT(setTareasNuevas(int)) );
+  connect( ed,   SIGNAL(tareasNuevas(int)), this, SLOT(setTareasNuevas(int)) );
+
+  ed->show();
 }
+
 
 void Planificador::cargar(const char *nombre) {
-    int linea_error = Parsea_fichero((char*)nombre);
-    if (y_error != -1) {
-        statusBar()->showMessage("Carga Abortada");
-        canvas->Limpia();
-        num_tareas = 0;
-        QMessageBox::warning(editor, "Error de carga", y_mensaje);
-        emit ParseErrorEn(linea_error);
-    }
-    emit tareasNuevas(num_lect+1);
+  int linea_error = Parsea_fichero(nombre);
+
+  if (y_error != -1) {
+    statusBar()->showMessage("Carga Abortada");
+    canvas->Limpia();
+    num_tareas = 0;
+    QMessageBox::warning(editor, "Error de carga", y_mensaje);
+    emit ParseErrorEn(linea_error);
+    return;
+  }
+
+  emit tareasNuevas(num_lect+1);
 }
+
 
 void Planificador::cargar() {
-    char nombre[1000];
-    statusBar()->showMessage("Cargar fichero de especificacion de tareas.");
+  QString fn = QFileDialog::getOpenFileName(this, "Abrir..", "", "Def files (*.def)");
 
-    QString fn = QFileDialog::getOpenFileName(0, "Abrir..", "", "*.def");
-    if (!fn.isEmpty()) {
-        if (fn.length() >= 1000) return;
-        QByteArray ba = fn.toLocal8Bit();
-        strncpy(nombre, ba.constData(), 999);
-        nombre[999] = 0;
+  if ( fn.isEmpty() ) {
+    statusBar()->showMessage("Carga Abortada");
+    return;
+  }
 
-        Parsea_fichero(nombre);
-        editor->load(nombre);
+  QByteArray ba = fn.toLocal8Bit();
+  Parsea_fichero(ba.data());
+  editor->load(ba.data());
 
-        if (y_error != -1) {
-            statusBar()->showMessage("Carga Abortada");
-            canvas->Limpia();
-            num_tareas = 0;
-            QMessageBox::warning(editor, "Error de carga", y_mensaje);
-            return;
-        }
-        emit tareasNuevas(num_lect+1);
-    } else {
-        statusBar()->showMessage("Carga Abortada");
-    }
+  if (y_error != -1) {
+    statusBar()->showMessage("Carga Abortada");
+    canvas->Limpia();
+    num_tareas = 0;
+    QMessageBox::warning(editor, "Error de carga", y_mensaje);
+    return;
+  }
+
+  emit tareasNuevas(num_lect+1);
 }
+
 
 void Planificador::setTareasNuevas(int lecturas) {
-    if (num_lect != lecturas) {
-        num_lect = lecturas;
-        Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
-                         Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
-        actualiza(true);
-        emit tareasNuevas(lecturas);
-    }
-}
-
-struct dibuja_canvas : public std::unary_function<evento_c, void>
-{
-    dibuja_canvas(Canvas &canvas, bool paso_a_paso=false, int pos=0)
-        : cv(canvas), pap(paso_a_paso), fin(pos) {}
-    void operator()(const evento_c &ev) const {
-        if (!pap || ev.Inicio() < (tiempo_t)fin)
-            cv.Dibuja(ev);
-    }
-    bool pap;
-    int fin;
-    Canvas &cv;
-};
-
-void Planificador::actualiza(bool hay_que_limpiar) {
-    char cade[1000];
-    tiempo_t computo;
-
-    if (!num_tareas) return;
-
-    if (hay_que_limpiar)
-        canvas->Limpia();
-
-    for (int x = 0; x < num_tareas; x++) {
-        computo = 0;
-        for (int y = 0; y < Tareas[x].Nsubtareas; y++)
-            computo += Tareas[x].subtarea[y].recurso ? 0 : Tareas[x].subtarea[y].tiempo;
-        sprintf(cade, "Prio:\t%d\nLlegada:\t%d\nPerid:\t%d\nComputo:\t%d",
-                Tareas[x].prioridad, (int)Tareas[x].llegada,
-                (int)Tareas[x].periodo, (int)computo);
-        canvas->Dibuja(x, Tareas[x].nombre, cade);
-    }
-
-    if (paso->isChecked()) {
-        for_each(lst_eventos.begin(), lst_eventos.end(),
-                 trocea_eventos(lst_ord_eventos));
-        for_each(lst_ord_eventos.begin(), lst_ord_eventos.end(),
-                 dibuja_canvas(*canvas, paso->isChecked(), seleccion_paso->value()));
-    } else {
-        for_each(lst_eventos.begin(), lst_eventos.end(),
-                 dibuja_canvas(*canvas));
-    }
-    canvas->finalizado_dibujo();
-}
-
-void Planificador::setPaso(int) {
+  if (num_lect != lecturas) {
+    num_lect = lecturas;
     Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
                      Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
     actualiza(true);
+    emit tareasNuevas(lecturas);
+  }
+}
+
+
+struct dibuja_canvas {
+  dibuja_canvas(Canvas &canvas, bool paso_a_paso=false, int pos=0)
+    : cv(canvas), pap(paso_a_paso), fin(pos) {}
+
+  void operator()(const evento_c &ev) const {
+    if (!pap || ev.Inicio() < (tiempo_t)fin)
+      cv.Dibuja(ev);
+  }
+  bool pap;
+  int  fin;
+  Canvas &cv;
+};
+
+
+void Planificador::actualiza(bool hay_que_limpiar) {
+  char cade[1000];
+  tiempo_t computo;
+
+  if (!num_tareas) return;
+
+  if (hay_que_limpiar)
+    canvas->Limpia();
+
+  for (int x=0; x < num_tareas; x++) {
+    computo = 0;
+    for (int y=0; y < Tareas[x].Nsubtareas; y++)
+      computo += Tareas[x].subtarea[y].recurso ? 0 : Tareas[x].subtarea[y].tiempo;
+
+    sprintf(cade, "Prio:\t%d\nLlegada:\t%d\nPerid:\t%d\nCómputo:\t%d",
+            Tareas[x].prioridad,
+            Tareas[x].llegada,
+            Tareas[x].periodo,
+            (int)computo);
+    canvas->Dibuja(x, Tareas[x].nombre, cade);
+  }
+
+  if (paso->isChecked()) {
+    for_each(lst_eventos.begin(), lst_eventos.end(),
+             trocea_eventos(lst_ord_eventos));
+    for_each(lst_ord_eventos.begin(), lst_ord_eventos.end(),
+             dibuja_canvas(*canvas, paso->isChecked(), seleccion_paso->value()));
+  } else {
+    for_each(lst_eventos.begin(), lst_eventos.end(),
+             dibuja_canvas(*canvas));
+  }
+  canvas->finalizado_dibujo();
+}
+
+
+void Planificador::setPaso(int) {
+  Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
+                   Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
+  actualiza(true);
 }
 
 void Planificador::togglePaso(bool) {
-    Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
-                     Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
-    actualiza(true);
+  Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
+                   Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
+  actualiza(true);
 }
 
 void Planificador::setQuantum(int quant) {
-    quantum_actual = quant;
-    Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
-                     Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
-    actualiza(true);
+  quantum_actual = quant;
+  Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
+                   Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
+  actualiza(true);
 }
 
-void Planificador::closeDoc() { close(); }
+void Planificador::closeDoc() {
+  close();
+}
 
 void Planificador::closeEvent(QCloseEvent *) {
-    if (spawnedPlanificadores && spawnedPlanificadores->indexOf(this) != -1)
-        delete this;
-    else
-        hide();
+  if ( spawnedPlanificadores && spawnedPlanificadores->indexOf(this) != -1 ) {
+    delete this;
+  } else {
+    hide();
+  }
 }
 
 void Planificador::toggleHerrBar() {
-    if (controlTools->isVisible()) {
-        controlTools->hide();
-        pasoTools->hide();
-        thAction->setChecked(false);
-    } else {
-        controlTools->show();
-        pasoTools->show();
-        thAction->setChecked(true);
-    }
+  if ( controlTools->isVisible() ) {
+    controlTools->hide();
+    pasoTools->hide();
+    toggleHerrAction->setChecked(false);
+  } else {
+    controlTools->show();
+    pasoTools->show();
+    toggleHerrAction->setChecked(true);
+  }
 }
 
 void Planificador::toggleStatusBar() {
-    if (statusBar()->isVisible()) {
-        statusBar()->hide();
-        sbAction->setChecked(false);
-    } else {
-        statusBar()->show();
-        sbAction->setChecked(true);
-    }
+  if ( statusBar()->isVisible() ) {
+    statusBar()->hide();
+    toggleStatusAction->setChecked(false);
+  } else {
+    statusBar()->show();
+    toggleStatusAction->setChecked(true);
+  }
 }
 
 void Planificador::planificador_elegido(int plan) {
-    politica_planificador_actual = plan;
-    seleccion_quantum->setEnabled((plan==4) || (plan==7));
-    Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
-                     Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
-    actualiza(true);
+  politica_planificador_actual = plan;
+  seleccion_quantum->setEnabled( (plan==4) || (plan==7) );
+  Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
+                   Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
+  actualiza(true);
 }
 
 void Planificador::recurso_elegido(int rec) {
-    politica_recurso_actual = rec;
-    Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
-                     Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
-    actualiza(true);
+  politica_recurso_actual = rec;
+  Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
+                   Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
+  actualiza(true);
 }
 
 void Planificador::aboutQt() {
-    QMessageBox::aboutQt(this, "Planificador desarrollado con:");
+  QMessageBox::aboutQt( this, "Planificador desarrollado con:" );
 }
 
 void Planificador::mostrarAutores() {
-    QMessageBox::about(this, "Planificador",
-                       "Desarrollado por:\nIsmael Ripoll y Sergio Saez\nDISCA, UPV");
+  QMessageBox::about( this, "Planificador",
+                      "Desarrollado por:\n"
+                      "Ismael Ripoll y Sergio Saez\n"
+                      "DISCA, UPV");
 }
 
 void Planificador::mostrarAyuda() {
-    new AyudaCls(NULL, "Ayuda");
+  new AyudaCls(NULL, "Ayuda");
 }

@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: DescripcionCls.cc
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Declaraciï¿½n de la clase 'DescripcionCls'
+//  Descripción: 
+// 	 Declaración de la clase 'DescripcionCls'
 // 
 // *************************************************************************
 
@@ -22,7 +22,7 @@
 
 // **** CLASE 'DescripcionCls' ****
 
-// *** Mï¿½todos Pï¿½blicos ***************************************
+// *** Métodos Públicos ***************************************
 
 // *** DescripcionCls::Descripcion
 // Informa al planificador de la llegada de una nueva tarea
@@ -37,7 +37,7 @@ void DescripcionCls::Descripcion
 {
   // *** Objetos locales
 
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   lst_eventos.erase(lst_eventos.begin(),lst_eventos.end());
 

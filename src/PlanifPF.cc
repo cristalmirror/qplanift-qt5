@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: PlanifPF.cc
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Implementaciï¿½nde la clase 'PlanifPF'
+//  Descripción: 
+// 	 Implementaciónde la clase 'PlanifPF'
 // 
 // *************************************************************************
 
@@ -22,7 +22,7 @@
 
 // *** Definiciones Externas **********************************
 
-// *** Mï¿½todos Pï¿½blicos ***************************************
+// *** Métodos Públicos ***************************************
 
 // *** PlanifPF::TareaNueva
 // Informa al planificador de la llegada de una nueva tarea
@@ -32,7 +32,7 @@ int PlanifPF::TareaNueva
  tarea_activa_t * tarea
  )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   cl_preparadas.push(tarea);
 
@@ -42,7 +42,7 @@ int PlanifPF::TareaNueva
 
 
 // *** PlanifPF::SiguienteActivacion
-// Indica cuando se debe realizar la nueva activaciï¿½n
+// Indica cuando se debe realizar la nueva activación
 
 tiempo_t PlanifPF::SiguienteActivacion 
 ( 
@@ -50,7 +50,7 @@ tiempo_t PlanifPF::SiguienteActivacion
  tiempo_t		tiempo_actual
  )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (!cl_preparadas.empty())
     if (procesador.EstaLibre())
@@ -60,7 +60,7 @@ tiempo_t PlanifPF::SiguienteActivacion
 	  cl_preparadas.top()->prioridad)
 	return procesador.SiguienteLibre(tiempo_actual);
       else
-	return tiempo_actual;	// Expulsiï¿½n
+	return tiempo_actual;	// Expulsión
   else
     return MAX_TIEMPO;
 
@@ -72,11 +72,11 @@ tiempo_t PlanifPF::SiguienteActivacion
 
 tarea_activa_t * PlanifPF::BorraSiguiente ( )
 {
-  // *** Objetos Locales. Inicializaciï¿½n
+  // *** Objetos Locales. Inicialización
 
   tarea_activa_t *	sig_tarea;
 
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (!cl_preparadas.empty())
     {
@@ -93,14 +93,14 @@ tarea_activa_t * PlanifPF::BorraSiguiente ( )
 
 // *** PlanifPF::TareaExpulsada
 // Informa al planificador que la tarea expulsada todavia le queda
-// tiempo de cï¿½mputo
+// tiempo de cómputo
 
 int PlanifPF::TareaExpulsada 
 ( 
  tarea_activa_t *	tarea
  )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   cl_preparadas.push(tarea);
 
@@ -116,5 +116,5 @@ PlanifPF::~PlanifPF ()
 
 } // end PlanifPF::~PlanifPF
 
-// *** Mï¿½todos Privados ***************************************
+// *** Métodos Privados ***************************************
 

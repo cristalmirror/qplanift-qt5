@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: PlanifPFRR.cc
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Implementaciï¿½nde la clase 'PlanifPFRR'
+//  Descripción: 
+// 	 Implementaciónde la clase 'PlanifPFRR'
 // 
 // *************************************************************************
 
@@ -24,7 +24,7 @@
 
 // *** Definiciones Externas **********************************
 
-// *** Mï¿½todos Pï¿½blicos ***************************************
+// *** Métodos Públicos ***************************************
 
 // *** PlanifPFRR::TareaNueva
 // Informa al planificador de la llegada de una nueva tarea
@@ -34,7 +34,7 @@ int PlanifPFRR::TareaNueva
  tarea_activa_t * tarea
  )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   cl_preparadas.push(tarea);
 
@@ -44,7 +44,7 @@ int PlanifPFRR::TareaNueva
 
 
 // *** PlanifPFRR::SiguienteActivacion
-// Indica cuando se debe realizar la nueva activaciï¿½n
+// Indica cuando se debe realizar la nueva activación
 
 tiempo_t PlanifPFRR::SiguienteActivacion 
 ( 
@@ -52,7 +52,7 @@ tiempo_t PlanifPFRR::SiguienteActivacion
  tiempo_t		tiempo_actual
  )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (!cl_preparadas.empty())
     if (procesador.EstaLibre())
@@ -60,24 +60,24 @@ tiempo_t PlanifPFRR::SiguienteActivacion
     else
       if (procesador.PrioridadTarea(tiempo_actual) < 
 	  cl_preparadas.top()->prioridad)
-				// La tarea en ejecuciï¿½n es la mï¿½s
+				// La tarea en ejecución es la más
 				// prioritaria
 	return procesador.SiguienteLibre(tiempo_actual);
       else if (procesador.PrioridadTarea(tiempo_actual) == 
 	       cl_preparadas.top()->prioridad)
-				// La tarea en ejecuciï¿½n igual de
+				// La tarea en ejecución igual de
 				// prioritaria -> Round Robin
       {
 	tiempo_t ej= procesador.EjecutandoseTarea(tiempo_actual);
-				// Tiempo en ejecuciï¿½n de la tarea actual
+				// Tiempo en ejecución de la tarea actual
 
 	if (ej % CPU_quantum == 0 && ej > 0)
 	  return tiempo_actual;
 	else
 	  return tiempo_actual + CPU_quantum - (ej % CPU_quantum);
       }	// endif
-      else			// Hay una tarea preparada mï¿½s preparada
-	  return tiempo_actual;	// Expulsiï¿½n
+      else			// Hay una tarea preparada más preparada
+	  return tiempo_actual;	// Expulsión
   else
     return MAX_TIEMPO;
 
@@ -89,11 +89,11 @@ tiempo_t PlanifPFRR::SiguienteActivacion
 
 tarea_activa_t * PlanifPFRR::BorraSiguiente ( )
 {
-  // *** Objetos Locales. Inicializaciï¿½n
+  // *** Objetos Locales. Inicialización
 
   tarea_activa_t *	sig_tarea;
 
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (!cl_preparadas.empty())
     {
@@ -110,14 +110,14 @@ tarea_activa_t * PlanifPFRR::BorraSiguiente ( )
 
 // *** PlanifPFRR::TareaExpulsada
 // Informa al planificador que la tarea expulsada todavia le queda
-// tiempo de cï¿½mputo
+// tiempo de cómputo
 
 int PlanifPFRR::TareaExpulsada 
 ( 
  tarea_activa_t *	tarea
  )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   cl_preparadas.push(tarea);
 
@@ -133,5 +133,5 @@ PlanifPFRR::~PlanifPFRR ()
 
 } // end PlanifPFRR::~PlanifPFRR
 
-// *** Mï¿½todos Privados ***************************************
+// *** Métodos Privados ***************************************
 

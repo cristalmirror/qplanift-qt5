@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: PlanifSRTF.cc
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Implementaciï¿½nde la clase 'PlanifSRTF'
+//  Descripción: 
+// 	 Implementaciónde la clase 'PlanifSRTF'
 // 
 // *************************************************************************
 
@@ -22,7 +22,7 @@
 
 // *** Definiciones Externas **********************************
 
-// *** Mï¿½todos Pï¿½blicos ***************************************
+// *** Métodos Públicos ***************************************
 
 // *** PlanifSRTF::TareaNueva
 // Informa al planificador de la llegada de una nueva tarea
@@ -32,7 +32,7 @@ int PlanifSRTF::TareaNueva
  tarea_activa_t *	tarea
  )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   cl_preparadas.push(tarea);
 
@@ -42,7 +42,7 @@ int PlanifSRTF::TareaNueva
 
 
 // *** PlanifSRTF::SiguienteActivacion
-// Indica cuando se debe realizar la nueva activaciï¿½n
+// Indica cuando se debe realizar la nueva activación
 
 tiempo_t PlanifSRTF::SiguienteActivacion 
 ( 
@@ -50,7 +50,7 @@ tiempo_t PlanifSRTF::SiguienteActivacion
  tiempo_t		tiempo_actual
  )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (!cl_preparadas.empty())
     if (procesador.EstaLibre())
@@ -60,7 +60,7 @@ tiempo_t PlanifSRTF::SiguienteActivacion
 	  cl_preparadas.top()->computo)
 	return procesador.SiguienteLibre(tiempo_actual);
       else
-	return tiempo_actual;	// Expulsiï¿½n
+	return tiempo_actual;	// Expulsión
   else
     return MAX_TIEMPO;
 
@@ -72,11 +72,11 @@ tiempo_t PlanifSRTF::SiguienteActivacion
 
 tarea_activa_t * PlanifSRTF::BorraSiguiente ( )
 {
-  // *** Objetos Locales. Inicializaciï¿½n
+  // *** Objetos Locales. Inicialización
 
   tarea_activa_t *	sig_tarea;
 
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (!cl_preparadas.empty())
     {
@@ -93,14 +93,14 @@ tarea_activa_t * PlanifSRTF::BorraSiguiente ( )
 
 // *** PlanifSRTF::TareaExpulsada
 // Informa al planificador que la tarea expulsada todavia le queda
-// tiempo de cï¿½mputo
+// tiempo de cómputo
 
 int PlanifSRTF::TareaExpulsada 
 ( 
  tarea_activa_t *	tarea
  )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   cl_preparadas.push(tarea);
 
@@ -116,5 +116,5 @@ PlanifSRTF::~PlanifSRTF ()
 
 } // end PlanifSRTF::~PlanifSRTF
 
-// *** Mï¿½todos Privados ***************************************
+// *** Métodos Privados ***************************************
 

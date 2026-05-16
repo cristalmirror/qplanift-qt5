@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: PlanifSJF.hh
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Declaraciï¿½n de la clase 'PlanifSJF'
+//  Descripción: 
+// 	 Declaración de la clase 'PlanifSJF'
 // 
 // *************************************************************************
 
@@ -42,7 +42,7 @@ public:
    tarea_activa_t *	tarea
    );
 
-  // Indica cuando se debe realizar la nueva activaciï¿½n
+  // Indica cuando se debe realizar la nueva activación
   virtual
   tiempo_t		SiguienteActivacion 
   (
@@ -58,7 +58,7 @@ public:
    );
 
   // Informa al planificador que la tarea expulsada todavia le queda
-  // tiempo de cï¿½mputo
+  // tiempo de cómputo
   virtual
   int			TareaExpulsada 
   (
@@ -71,7 +71,7 @@ public:
   // Destructor virtual
   virtual ~PlanifSJF ();
 
-  // *** Secciï¿½n Privada
+  // *** Sección Privada
 private:
   cola_computo_c	cl_preparadas;
 

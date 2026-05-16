@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: PlanifPFNE.cc
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Implementaciï¿½nde la clase 'PlanifPFNE'
+//  Descripción: 
+// 	 Implementaciónde la clase 'PlanifPFNE'
 // 
 // *************************************************************************
 
@@ -22,7 +22,7 @@
 
 // *** Definiciones Externas **********************************
 
-// *** Mï¿½todos Pï¿½blicos ***************************************
+// *** Métodos Públicos ***************************************
 
 // *** PlanifPFNE::TareaNueva
 // Informa al planificador de la llegada de una nueva tarea
@@ -32,7 +32,7 @@ int PlanifPFNE::TareaNueva
  tarea_activa_t *	tarea
  )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   cl_preparadas.push(tarea);
 
@@ -42,7 +42,7 @@ int PlanifPFNE::TareaNueva
 
 
 // *** PlanifPFNE::SiguienteActivacion
-// Indica cuando se debe realizar la nueva activaciï¿½n
+// Indica cuando se debe realizar la nueva activación
 
 tiempo_t PlanifPFNE::SiguienteActivacion 
 ( 
@@ -50,7 +50,7 @@ tiempo_t PlanifPFNE::SiguienteActivacion
  tiempo_t		tiempo_actual
  )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (!cl_preparadas.empty())
     if (procesador.EstaLibre())
@@ -68,11 +68,11 @@ tiempo_t PlanifPFNE::SiguienteActivacion
 
 tarea_activa_t * PlanifPFNE::BorraSiguiente ( )
 {
-  // *** Objetos Locales. Inicializaciï¿½n
+  // *** Objetos Locales. Inicialización
 
   tarea_activa_t *	sig_tarea;
 
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (!cl_preparadas.empty())
     {
@@ -94,5 +94,5 @@ PlanifPFNE::~PlanifPFNE ()
 
 } // end PlanifPFNE::~PlanifPFNE
 
-// *** Mï¿½todos Privados ***************************************
+// *** Métodos Privados ***************************************
 

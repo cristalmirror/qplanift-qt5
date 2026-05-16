@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: ProcesadorCls.hh
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Declaraciï¿½n de la clase 'ProcesadorCls'
+//  Descripción: 
+// 	 Declaración de la clase 'ProcesadorCls'
 // 
 // *************************************************************************
 
@@ -38,7 +38,7 @@ public:
    void
    );
 
-  // Inicializaciï¿½n
+  // Inicialización
 
   void			Inicializa 
   (
@@ -49,24 +49,24 @@ public:
       instante_activacion= 0;
     }; 
 
-  // Coloca en ejecuciï¿½n la 'Tarea' y devuelve la tarea que estaba en
-  // Ejecuciï¿½n, NULL si estaba vacio.
+  // Coloca en ejecución la 'Tarea' y devuelve la tarea que estaba en
+  // Ejecución, NULL si estaba vacio.
   tarea_activa_t *	TareaNueva 
   (
    tiempo_t		tiempo_actual,
    tarea_activa_t *	tarea
    );
 
-  // Saca de ejecuciï¿½n la tarea. Se debe utilizar sï¿½lo cuando la tarea
-  // en ejecuciï¿½n ha terminado
+  // Saca de ejecución la tarea. Se debe utilizar sólo cuando la tarea
+  // en ejecución ha terminado
   tarea_activa_t *	BorraSiguiente 
   (
    tiempo_t		tiempo_actual
    );
 
-  // *** Informaciï¿½n ************************************************
+  // *** Información ************************************************
 
-  // Informa si el procesador estï¿½ libre
+  // Informa si el procesador está libre
   bool			EstaLibre
   (
    ) const
@@ -74,13 +74,13 @@ public:
       return (tarea_ejecucion == NULL);
     };
 
-  // Informa del siguiente instante en que estarï¿½ el procesador libre 
+  // Informa del siguiente instante en que estará el procesador libre 
   tiempo_t		SiguienteLibre 
   (
    tiempo_t		tiempo_actual
    ) const;
 
-  // Devuelve el tiempo que le queda a la tarea en ejecuciï¿½n por
+  // Devuelve el tiempo que le queda a la tarea en ejecución por
   // ejecutarse
   // PRE: !(EstaLibre())
   tiempo_t		ComputoTarea
@@ -91,7 +91,7 @@ public:
       return tarea_ejecucion->computo - (tiempo_actual - instante_activacion);
     };
 
-  // Devuelve el tiempo que lleva la tarea en ejecuciï¿½n
+  // Devuelve el tiempo que lleva la tarea en ejecución
   // PRE: !(EstaLibre())
   tiempo_t		EjecutandoseTarea
   (
@@ -101,7 +101,7 @@ public:
       return tiempo_actual - instante_activacion;
     };
 
-  // Devuelve la prioridad de la tarea en ejecuciï¿½n
+  // Devuelve la prioridad de la tarea en ejecución
   // PRE: !(EstaLibre())
   int			PrioridadTarea
   (
@@ -113,10 +113,10 @@ public:
 
 private:
   tarea_activa_t *	tarea_ejecucion;
-				// Tarea en ejecuciï¿½n
+				// Tarea en ejecución
   tiempo_t		instante_activacion;
 				// Instante en el que entro la tarea
-				// que estï¿½ en ejecuciï¿½n
+				// que está en ejecución
 };
 
 #endif // *** Include ProcesadorCls.hh

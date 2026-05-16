@@ -1,16 +1,16 @@
 	// *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: SistemaCls.hh
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Declaraciï¿½n de la clase 'SistemaCls'
+//  Descripción: 
+// 	 Declaración de la clase 'SistemaCls'
 // 
 // *************************************************************************
 
@@ -45,7 +45,7 @@ public:
    void
    );
 
-  // Realiza la simulaciï¿½n del sistema
+  // Realiza la simulación del sistema
   int			Simula 
   (
    tarea_c *		tbl_tareas,
@@ -65,7 +65,7 @@ private:
 };
 
 			       
-// *** Definiciï¿½n de los cuerpos
+// *** Definición de los cuerpos
 
 template <class CPUPlanif_c,class RECPlanif_c>  
 SistemaCls<CPUPlanif_c,RECPlanif_c>::SistemaCls ()
@@ -94,15 +94,15 @@ SistemaCls<CPUPlanif_c,RECPlanif_c>::Simula
  EventosCls&		lst_eventos
  )
 {
-  // *** Objetos Locales. Inicializaciï¿½n
+  // *** Objetos Locales. Inicialización
 
   evento_simul_t
     evento;			// Tipo del siguiente evento
   tiempo_t	
-    tiempo_actual,		// Instante actual de la simulaciï¿½n
-    sig_llegada,		// Instante de la prï¿½xima llegada
-    sig_activacion,		// Instante de la prï¿½xima activaciï¿½n
-    sig_libre;			// Instante del prï¿½ximo instante 
+    tiempo_actual,		// Instante actual de la simulación
+    sig_llegada,		// Instante de la próxima llegada
+    sig_activacion,		// Instante de la próxima activación
+    sig_libre;			// Instante del próximo instante 
 				//  de procesador libre
   tiempo_t
     siguiente;			// tiempo auxiliar
@@ -119,22 +119,22 @@ SistemaCls<CPUPlanif_c,RECPlanif_c>::Simula
   int
     recurso_libre= 0;		// Siguiente recurso libre
   bool
-    final_simulacion;		// Indica que la simulaciï¿½n a terminado
+    final_simulacion;		// Indica que la simulación a terminado
 
   tarea_activa_t *
     tarea;			// Tarea a incorporar
   tarea_activa_t *
     tarea_expulsada;		// Tarea expulsada
   
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
 
   lst_eventos.erase(lst_eventos.begin(),lst_eventos.end());
 
-  // --- Inicializaciï¿½n de la simulaciï¿½n
+  // --- Inicialización de la simulación
 
   carga.Inicializa(tbl_tareas, num_tareas); 
-				// Inicializa la carga de la simulaciï¿½n
+				// Inicializa la carga de la simulación
 
   for (int i= 0; i<=num_recursos; i++)
     {
@@ -146,7 +146,7 @@ SistemaCls<CPUPlanif_c,RECPlanif_c>::Simula
   final_simulacion= false;
   tiempo_actual= 0;
 
-  // Bucle principal de la simulaciï¿½n
+  // Bucle principal de la simulación
 
   while (!final_simulacion)
     {
@@ -169,7 +169,7 @@ SistemaCls<CPUPlanif_c,RECPlanif_c>::Simula
 				// Siguiente llegada de una tarea
       sig_llegada= carga.SiguienteLlegada ();
 
-				// Siguiente activaciï¿½n de una tarea
+				// Siguiente activación de una tarea
       siguiente= 0;
       sig_activacion= MAX_TIEMPO;
       for (int i= 0; 
@@ -203,8 +203,8 @@ SistemaCls<CPUPlanif_c,RECPlanif_c>::Simula
 	  evento= Activacion;
 	  tiempo_actual= sig_activacion;
 	}
-      else			// Final de la simulaciï¿½n
-	{			// No hay mï¿½s eventos
+      else			// Final de la simulación
+	{			// No hay más eventos
 	  final_simulacion= true;
 	  continue;
 	} // endif
@@ -212,13 +212,13 @@ SistemaCls<CPUPlanif_c,RECPlanif_c>::Simula
       // --- Control del tiempo
 
       if (tiempo_actual > tiempo_simulacion)
-	{			// Final de la simulaciï¿½n
+	{			// Final de la simulación
 	  tiempo_actual= tiempo_simulacion;
 	  final_simulacion= true;	
 	  continue;
 	} // endif
 
-      // --- Informaciï¿½n de depuraciï¿½n
+      // --- Información de depuración
 
 #ifdef DEBUG
       fprintf(stdout, "SIS>> t: %ld Ev: %s\n", 
@@ -243,13 +243,13 @@ SistemaCls<CPUPlanif_c,RECPlanif_c>::Simula
 				// Genera un evento de llegada
 	  break;
 
-	case Activacion:	// Activaciï¿½n de una tarea
+	case Activacion:	// Activación de una tarea
 	  tarea= planificador[recurso_activacion]->BorraSiguiente();
 				// Coge la siguiente tarea a planificar 
 	  tarea_expulsada= 
 	    recurso[recurso_activacion].TareaNueva(tiempo_actual,
 						   tarea);
-				// Pasa la atrea al estado 'ejecuciï¿½n'
+				// Pasa la atrea al estado 'ejecución'
 				// en el recurso correspondiente
 	  if (tarea_expulsada != NULL)
 	    {
@@ -261,15 +261,15 @@ SistemaCls<CPUPlanif_c,RECPlanif_c>::Simula
 				     tarea_expulsada->recurso,
 				     inicio[tarea_expulsada->recurso],
 				     tiempo_actual);
-				// Genera el evento de final de activaciï¿½n
+				// Genera el evento de final de activación
 	    } // endif
 
 	  inicio[recurso_activacion]= tiempo_actual;
 
        	  break;
 
-	case RecursoLibre:	// Liberaciï¿½n de un recurso. Implica
-				// normalmente la terminaciï¿½n de una tarea
+	case RecursoLibre:	// Liberación de un recurso. Implica
+				// normalmente la terminación de una tarea
 	  tarea= recurso[recurso_libre].BorraSiguiente(tiempo_actual);
 				// Saca la tarea del procesador
 	  identif= tarea->ident;
@@ -278,20 +278,20 @@ SistemaCls<CPUPlanif_c,RECPlanif_c>::Simula
 				 recurso_libre,
 				 inicio[recurso_libre],
 				 tiempo_actual);
-				// Genera el evento de final de activaciï¿½n
+				// Genera el evento de final de activación
 
 	  if (carga.TareaTerminada(tarea, tiempo_actual))
 	    {			// Informa al generador de carga de la
-				// terminaciï¿½n de una subtarea
+				// terminación de una subtarea
 	      lst_eventos.Final(identif, 
 				recurso_libre,
 				tiempo_actual);
-				// Si era la ï¿½ltima subtarea, genera
+				// Si era la última subtarea, genera
 				// el evento de final de tarea
 	    } // endif
 	  break;
 	default:
-	  fprintf(stderr, "ERROR de implementaciï¿½n:\n"
+	  fprintf(stderr, "ERROR de implementación:\n"
 		  "  Fich: %s Linea: %d\n", __FILE__, __LINE__);
 	  std::exit (1);
 	  break;

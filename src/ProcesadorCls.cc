@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: ProcesadorCls.cc
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Implementaciï¿½nde la clase 'ProcesadorCls'
+//  Descripción: 
+// 	 Implementaciónde la clase 'ProcesadorCls'
 // 
 // *************************************************************************
 
@@ -23,20 +23,20 @@
 
 // *** Definiciones Externas **********************************
 
-// *** Mï¿½todos Pï¿½blicos ***************************************
+// *** Métodos Públicos ***************************************
 
 // *** ProcesadorCls::ProcesadorCls
 
 ProcesadorCls::ProcesadorCls ( )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   tarea_ejecucion= NULL;
   instante_activacion= 0;
 
 } // end ProcesadorCls::ProcesadorCls
 
-// *** Mï¿½todos Privados ***************************************
+// *** Métodos Privados ***************************************
 
 
 // *** ProcesadorCls::SiguienteLibre
@@ -46,7 +46,7 @@ tiempo_t ProcesadorCls::SiguienteLibre
  tiempo_t		tiempo_actual
  ) const
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
   
   if (tarea_ejecucion == NULL)
     return (MAX_TIEMPO);
@@ -64,11 +64,11 @@ tarea_activa_t * ProcesadorCls::TareaNueva
  tarea_activa_t *	tarea
  )
 {
-  // *** Objetos Locales. Inicializaciï¿½n
+  // *** Objetos Locales. Inicialización
 
   tarea_activa_t *	tarea_expulsada= tarea_ejecucion;
 
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (tarea_expulsada != NULL)
     {
@@ -91,11 +91,11 @@ tarea_activa_t * ProcesadorCls::BorraSiguiente
  tiempo_t		tiempo_actual
  )
 {
-  // *** Objetos Locales. Inicializaciï¿½n
+  // *** Objetos Locales. Inicialización
   
   tarea_activa_t *	tarea_expulsada= tarea_ejecucion;
   
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (tarea_expulsada != NULL)
     {

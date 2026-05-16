@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: CargaCls.cc
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Implementaciï¿½nde la clase 'CargaCls'
+//  Descripción: 
+// 	 Implementaciónde la clase 'CargaCls'
 // 
 // *************************************************************************
 
@@ -23,16 +23,16 @@
 
 // *** Definiciones Externas **********************************
 
-// *** Mï¿½todos Pï¿½blicos ***************************************
+// *** Métodos Públicos ***************************************
 
 // *** CargaCls::CargaCls
 
 CargaCls::CargaCls ( )
 {
-  // *** Objetos Locales. Inicializaciï¿½n
+  // *** Objetos Locales. Inicialización
   
   
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
   
   
 } // end CargaCls::CargaCls
@@ -47,11 +47,11 @@ int CargaCls::Inicializa
  int			NumeroTareas
  )
 {
-  // *** Objetos Locales. Inicializaciï¿½n
+  // *** Objetos Locales. Inicialización
 
   tarea_activa_t *	tarea;
 
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   tbl_tareas= TablaTareas;
   n_tareas= NumeroTareas;
@@ -86,11 +86,11 @@ int CargaCls::Inicializa
 
 
 // *** CargaCls::SiguienteLlegada
-// Informa de la siguiente activaciï¿½n
+// Informa de la siguiente activación
 
 tiempo_t CargaCls::SiguienteLlegada ( )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (!cl_subtareas.empty())
     return (cl_subtareas.front()->llegada);
@@ -103,16 +103,16 @@ tiempo_t CargaCls::SiguienteLlegada ( )
 
 
 // *** CargaCls::BorraSiguiente
-// Saca de la lista la siguiente activaciï¿½n
+// Saca de la lista la siguiente activación
 
 tarea_activa_t * CargaCls::BorraSiguiente ( )
 {
-  // *** Objetos Locales. Inicializaciï¿½n
+  // *** Objetos Locales. Inicialización
 
   tarea_activa_t *	tarea;
   tarea_activa_t *	sig_tarea;
 
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (!cl_subtareas.empty())
     {
@@ -123,7 +123,7 @@ tarea_activa_t * CargaCls::BorraSiguiente ( )
     {
       sig_tarea= cl_llegadas.top();
       cl_llegadas.pop();
-				// Tarea periï¿½dica
+				// Tarea periódica
       if (tbl_tareas[sig_tarea->ident].periodo > 0)
 	{
 	  int i= sig_tarea->ident;
@@ -171,12 +171,12 @@ bool CargaCls::TareaTerminada
  tiempo_t		tiempo_actual
  )
 {
-  // *** Objetos Locales. Inicializaciï¿½n
+  // *** Objetos Locales. Inicialización
 
   int			i= tarea->ident;
   int			sig_subtarea= tarea->subident+1;
 
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   if (tbl_tareas[i].Nsubtareas > sig_subtarea)
     {
@@ -201,11 +201,11 @@ bool CargaCls::TareaTerminada
 
 
 // *** CargaCls::Termina
-// Termina la simulaciï¿½n de la carga
+// Termina la simulación de la carga
 
 void CargaCls::Termina ( )
 {
-  // *** Cuerpo principal del mï¿½todo
+  // *** Cuerpo principal del método
 
   while (!cl_subtareas.empty())
     {
@@ -221,5 +221,5 @@ void CargaCls::Termina ( )
 
 } // end CargaCls::Termina
 
-// *** Mï¿½todos Privados ***************************************
+// *** Métodos Privados ***************************************
 

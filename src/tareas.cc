@@ -1,49 +1,51 @@
 #include "tipos.h"
 #include "tareas.hh"
-#include <QTreeWidgetItem>
+
+#include <QMessageBox>
+#include <QFrame>
+#include <QScrollBar>
+#include <QFileDialog>
 #include <QColor>
+#include <QPen>
+#include <QPainter>
+
+int TareaViewItem::contador = 0;
 
 Tareas_ventana::Tareas_ventana() : QTreeWidget(NULL) {
-    setColumnCount(2);
-    QStringList headers;
-    headers << "Atributo" << "Valor";
-    setHeaderLabels(headers);
-    setColumnWidth(0, 200);
-    setColumnWidth(1, 50);
-    setFixedWidth(250);
+  QTreeWidgetItem *tmp, *sub;
+  char cade[100];
 
-    for (int x = 0; x < num_tareas; x++) {
-        QTreeWidgetItem *tmp = new QTreeWidgetItem(this);
-        tmp->setText(0, Tareas[x].nombre);
+  setHeaderLabels(QStringList() << "             Atributo" << "Valor");
+  setColumnWidth(0, 200);
+  setColumnWidth(1, 50);
+  setRootIsDecorated(true);
+  setFixedWidth(250);
 
-        char cade[100];
-        sprintf(cade, "%d", Tareas[x].prioridad);
-        QTreeWidgetItem *it1 = new QTreeWidgetItem(tmp);
-        it1->setText(0, "Prioridad"); it1->setText(1, cade);
+  for (int x=0; x < num_tareas; x++) {
+    tmp = new QTreeWidgetItem(this, QStringList(Tareas[x].nombre));
 
-        sprintf(cade, "%d", Tareas[x].periodo);
-        QTreeWidgetItem *it2 = new QTreeWidgetItem(tmp);
-        it2->setText(0, "Periodo"); it2->setText(1, cade);
+    sprintf(cade, "%d", Tareas[x].prioridad);
+    new TareaViewItem(tmp, "Prioridad", cade);
 
-        sprintf(cade, "%d", (int)Tareas[x].llegada);
-        QTreeWidgetItem *it3 = new QTreeWidgetItem(tmp);
-        it3->setText(0, "Llegada"); it3->setText(1, cade);
+    sprintf(cade, "%d", Tareas[x].periodo);
+    new TareaViewItem(tmp, "Periodo", cade);
 
-        QTreeWidgetItem *sub = new QTreeWidgetItem(tmp);
-        sub->setText(0, "Secuencia de Ejecucion");
+    sprintf(cade, "%d", Tareas[x].llegada);
+    new TareaViewItem(tmp, "Llegada", cade);
 
-        for (int y = 0; y < Tareas[x].Nsubtareas; y++) {
-            char str_computo[100];
-            sprintf(str_computo, "%d", (int)Tareas[x].subtarea[y].tiempo);
-            QTreeWidgetItem *si = new QTreeWidgetItem(sub);
-            if (Tareas[x].subtarea[y].recurso == 0)
-                si->setText(0, "CPU");
-            else
-                si->setText(0, Recursos[Tareas[x].subtarea[y].recurso].nombre);
-            si->setText(1, str_computo);
-        }
+    sub = new QTreeWidgetItem(tmp, QStringList("Secuencia de Ejecución"));
+    for (int y=0; y < Tareas[x].Nsubtareas; y++) {
+      char str_computo[100];
+      sprintf(str_computo, "%d", Tareas[x].subtarea[y].tiempo);
+      if (Tareas[x].subtarea[y].recurso == 0) {
+        new TareaViewItem(sub, "CPU", str_computo);
+      } else {
+        new TareaViewItem(sub, Recursos[Tareas[x].subtarea[y].recurso].nombre, str_computo);
+      }
     }
-    show();
+  }
+
+  show();
 }
 
 Tareas_ventana::~Tareas_ventana() {}

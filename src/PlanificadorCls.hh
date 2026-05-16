@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: PlanificadorCls.hh
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Declaraciï¿½n de la clase 'PlanificadorCls'
+//  Descripción: 
+// 	 Declaración de la clase 'PlanificadorCls'
 // 
 // *************************************************************************
 
@@ -56,7 +56,7 @@ public:
    tarea_activa_t *	tarea
    )=0;
 
-  // Indica cuando se debe realizar la nueva activaciï¿½n
+  // Indica cuando se debe realizar la nueva activación
   virtual 
   tiempo_t		SiguienteActivacion 
   (
@@ -72,7 +72,7 @@ public:
    )=0;
 
   // Informa al planificador que la tarea expulsada todavia le queda
-  // tiempo de cï¿½mputo
+  // tiempo de cómputo
   virtual 
   int			TareaExpulsada 
   (

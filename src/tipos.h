@@ -1,13 +1,13 @@
 // ********************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
 //  Fichero: tipos.h
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
+//  Descripción: 
 //    Contiene los tipos comunes
 // 
 // *********************************************************************
@@ -57,10 +57,10 @@ struct tarea_c
 {
   char          nombre[NOMBRE_LEN];
   
-  int		Nsubtareas;	// Nï¿½mer de subtareas
+  int		Nsubtareas;	// Númer de subtareas
   int		prioridad;	// Prioridad de la tarea, en su caso
 
-  tiempo_t	llegada;	// Instante de la primera activaciï¿½n
+  tiempo_t	llegada;	// Instante de la primera activación
   tiempo_t	periodo;	// Periodo, =0 -> SIN periodo
   
   struct subtarea_c	subtarea[MAX_SUBTAREAS];
@@ -75,9 +75,9 @@ struct recurso_c {
 
 struct tarea_activa_t 
 {
-  int		ident;		// ï¿½ndice dentro de la tabla de tareas 
+  int		ident;		// Índice dentro de la tabla de tareas 
 
-  int		subident;	// ï¿½ndice de la subtarea 
+  int		subident;	// Índice de la subtarea 
   tiempo_t	llegada;	// Instante de llegada de la subtarea 
 
   tiempo_t	computo;	// tiempo restante por ejecutar 

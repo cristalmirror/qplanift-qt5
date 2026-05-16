@@ -27,7 +27,7 @@
 #include "DescripcionCls.hh"
 
 static char *CPUS_ID[]={
-  "Descripciï¿½n", 
+  "Descripción", 
   "FCFS", 
   "SJF", 
   "SRTF",
@@ -60,7 +60,7 @@ void SimuladorCls::Simula
   
   //  lst_eventos.erase(lst_eventos.begin(),lst_eventos.end());
   switch (politica_cpu){
-  case 0:  // Descripciï¿½n
+  case 0:  // Descripción
     {
       DescripcionCls Desc;
       Desc.Descripcion(tbl_tareas, num_tareas, num_recursos, lst_eventos);

@@ -1,1 +1,11 @@
-/src/*.o
+# Build artifacts
+src/*.o
+src/moc_*.cpp
+src/moc_predefs.h
+src/.qmake.stash
+src/Makefile
+src/qplanif
+src/qplanif5
+
+# Qt build directories
+build/

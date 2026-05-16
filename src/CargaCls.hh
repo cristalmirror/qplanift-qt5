@@ -1,16 +1,16 @@
 // *************************************************************************
 // 
-//  Departamento de Informï¿½tica de Sistema y Computadores (DISCA)
+//  Departamento de Informática de Sistema y Computadores (DISCA)
 //  Universidad Politecnica de Valencia.                         
 // 
-//  Autor: Sergio Sï¿½ez (ssaez@disca.upv.es)
+//  Autor: Sergio Sáez (ssaez@disca.upv.es)
 // 
 //  Fichero: CargaCls.hh
 //  
 //  Fecha: 
 // 
-//  Descripciï¿½n: 
-// 	 Declaraciï¿½n de la clase 'CargaCls'
+//  Descripción: 
+// 	 Declaración de la clase 'CargaCls'
 // 
 // *************************************************************************
 
@@ -43,23 +43,23 @@ public:
    tarea_c *		TablaTareas,
    int			NumeroTareas
    );
-  // Informa de la siguiente activaciï¿½n
+  // Informa de la siguiente activación
   tiempo_t		SiguienteLlegada 
   (
    void
    );
-  // Saca de la lista la siguiente activaciï¿½n
+  // Saca de la lista la siguiente activación
   tarea_activa_t *	BorraSiguiente 
   (
    void
    );
-  // Termina una subtarea. Devuelve true si era la ï¿½ltima subtarea
+  // Termina una subtarea. Devuelve true si era la última subtarea
   bool			TareaTerminada 
   (
    tarea_activa_t *	tarea,
    tiempo_t		tiempo_actual
    );
-  // Termina la simulaciï¿½n de la carga
+  // Termina la simulación de la carga
   void			Termina
   (
    void
