@@ -103,7 +103,7 @@
 
 
 
-#line 107 "input.tab.c"
+#line 107 "input_tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -126,7 +126,61 @@
 #  endif
 # endif
 
-#include "input.tab.h"
+
+/* Debug traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 0
+#endif
+#if YYDEBUG
+extern int yydebug;
+#endif
+
+/* Token kinds.  */
+#ifndef YYTOKENTYPE
+# define YYTOKENTYPE
+  enum yytokentype
+  {
+    YYEMPTY = -2,
+    YYEOF = 0,                     /* "end of file"  */
+    YYerror = 256,                 /* error  */
+    YYUNDEF = 257,                 /* "invalid token"  */
+    NUM = 258,                     /* NUM  */
+    TAREA = 259,                   /* TAREA  */
+    RECURSO = 260,                 /* RECURSO  */
+    CPU = 261,                     /* CPU  */
+    OFFSET = 262,                  /* OFFSET  */
+    PERIODO = 263,                 /* PERIODO  */
+    PRIORIDAD = 264,               /* PRIORIDAD  */
+    IDEN = 265                     /* IDEN  */
+  };
+  typedef enum yytokentype yytoken_kind_t;
+#endif
+
+/* Value type.  */
+#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+union YYSTYPE
+{
+#line 39 "input.y"
+
+  long  ivalue;
+  char  *cvalue;
+
+#line 169 "input_tab.c"
+
+};
+typedef union YYSTYPE YYSTYPE;
+# define YYSTYPE_IS_TRIVIAL 1
+# define YYSTYPE_IS_DECLARED 1
+#endif
+
+
+extern YYSTYPE yylval;
+
+
+int yyparse (void);
+
+
+
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -1128,49 +1182,49 @@ yyreduce:
   case 2: /* $@1: %empty  */
 #line 53 "input.y"
                       {}
-#line 1132 "input.tab.c"
+#line 1186 "input_tab.c"
     break;
 
   case 3: /* b_inicio: b_recursos $@1 b_tareas  */
 #line 53 "input.y"
                                    {}
-#line 1138 "input.tab.c"
+#line 1192 "input_tab.c"
     break;
 
   case 4: /* $@2: %empty  */
 #line 55 "input.y"
                          {}
-#line 1144 "input.tab.c"
+#line 1198 "input_tab.c"
     break;
 
   case 5: /* b_recursos: b_recursos $@2 b_linea_recurso  */
 #line 55 "input.y"
                                             {}
-#line 1150 "input.tab.c"
+#line 1204 "input_tab.c"
     break;
 
   case 6: /* b_recursos: %empty  */
 #line 56 "input.y"
            {}
-#line 1156 "input.tab.c"
+#line 1210 "input_tab.c"
     break;
 
   case 7: /* $@3: %empty  */
 #line 59 "input.y"
                     {}
-#line 1162 "input.tab.c"
+#line 1216 "input_tab.c"
     break;
 
   case 8: /* b_tareas: b_tareas $@3 b_linea_tarea  */
 #line 59 "input.y"
                                      {}
-#line 1168 "input.tab.c"
+#line 1222 "input_tab.c"
     break;
 
   case 9: /* b_tareas: %empty  */
 #line 60 "input.y"
          {}
-#line 1174 "input.tab.c"
+#line 1228 "input_tab.c"
     break;
 
   case 10: /* b_linea_recurso: RECURSO IDEN  */
@@ -1190,7 +1244,7 @@ yyreduce:
 #endif
 		  strncpy(Recursos[num_recursos].nombre,(yyvsp[0].cvalue),90);
 		}
-#line 1194 "input.tab.c"
+#line 1248 "input_tab.c"
     break;
 
   case 11: /* $@4: %empty  */
@@ -1212,13 +1266,13 @@ yyreduce:
 		 Tareas[num_tareas].Nsubtareas=Tareas[num_tareas].prioridad=0;
 
 	       }
-#line 1216 "input.tab.c"
+#line 1270 "input_tab.c"
     break;
 
   case 13: /* b_linea_tarea: %empty  */
 #line 102 "input.y"
   {}
-#line 1222 "input.tab.c"
+#line 1276 "input_tab.c"
     break;
 
   case 14: /* b_atributos: PERIODO '=' NUM b_atributos  */
@@ -1229,7 +1283,7 @@ yyreduce:
 #endif
 		Tareas[num_tareas].periodo = (tiempo_t) (yyvsp[-1].ivalue);
 	      }
-#line 1233 "input.tab.c"
+#line 1287 "input_tab.c"
     break;
 
   case 15: /* b_atributos: OFFSET '=' NUM b_atributos  */
@@ -1240,7 +1294,7 @@ yyreduce:
 #endif
 		Tareas[num_tareas].llegada = (tiempo_t) (yyvsp[-1].ivalue);
 	      }
-#line 1244 "input.tab.c"
+#line 1298 "input_tab.c"
     break;
 
   case 16: /* b_atributos: PRIORIDAD '=' NUM b_atributos  */
@@ -1251,13 +1305,13 @@ yyreduce:
 #endif
 		Tareas[num_tareas].prioridad = (yyvsp[-1].ivalue);
 	      }
-#line 1255 "input.tab.c"
+#line 1309 "input_tab.c"
     break;
 
   case 17: /* b_atributos: %empty  */
 #line 126 "input.y"
                {}
-#line 1261 "input.tab.c"
+#line 1315 "input_tab.c"
     break;
 
   case 18: /* $@5: %empty  */
@@ -1287,17 +1341,17 @@ yyreduce:
 	       Tareas[num_tareas].subtarea[*r].tiempo = (yyvsp[-1].ivalue);
 	       (*r)++;
 	     }
-#line 1291 "input.tab.c"
+#line 1345 "input_tab.c"
     break;
 
   case 20: /* b_patron_uso: %empty  */
 #line 158 "input.y"
                {}
-#line 1297 "input.tab.c"
+#line 1351 "input_tab.c"
     break;
 
 
-#line 1301 "input.tab.c"
+#line 1355 "input_tab.c"
 
       default: break;
     }
