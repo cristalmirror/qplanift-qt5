@@ -9,3 +9,6 @@ src/qplanif5
 
 # Qt build directories
 build/
+
+# AppImage generado
+/qplanif
