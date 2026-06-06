@@ -17,7 +17,9 @@ Permite cargar un conjunto de tareas definidas en un archivo `.def`, elegir un a
 - Prioridades (no expulsivo)
 - Prioridades Expulsivas
 - Prioridades + Round Robin
-
+- HRRN
+- MLFQ
+- prioridades + againg
 ### Recursos
 - FCFS
 - SJF
@@ -88,9 +90,18 @@ qmake qplanif.pro
 make
 ```
 
-### Ejecución
+## Compilación con Docker 
+- Instalacion de Docker
+```
+$ curl -fsSL https://get.docker.com | sh
 
-```bash
+$ sudo usermod -aG docker $USER
+
+$ ./build-appimage.sh
+```
+
+## Ejecución
+```
 ./qplanif
 ```
 
