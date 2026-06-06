@@ -43,7 +43,7 @@ ProcesadorCls::ProcesadorCls ( )
 
 tiempo_t ProcesadorCls::SiguienteLibre 
 ( 
- tiempo_t		tiempo_actual
+ tiempo_t		/*tiempo_actual*/
  ) const
 {
   // *** Cuerpo principal del método

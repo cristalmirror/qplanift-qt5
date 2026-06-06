@@ -23,7 +23,10 @@
 #include "PlanifSRTF.hh" 
 #include "PlanifPF.hh" 
 #include "PlanifRR.hh" 
-#include "PlanifPFRR.hh" 
+#include "PlanifPFRR.hh"
+#include "PlanifHRRN.hh"
+#include "PlanifPFAging.hh"
+#include "PlanifMLFQ.hh"
 
 
 
@@ -32,8 +35,8 @@ class SimuladorCls{
   
 public:
   
-  char **PlanifCPU();
-  char **PlanifRecursos();
+  const char **PlanifCPU();
+  const char **PlanifRecursos();
   
   
   

@@ -1,0 +1,48 @@
+# ============================================================
+# Demostración de MLFQ (Multilevel Feedback Queue)
+#
+# MLFQ usa múltiples colas con distintos quantums.
+# Las tareas CPU-bound van bajando de nivel (penalizadas).
+# Las tareas I/O-bound suben de nivel (premiadas).
+#
+# Tareas diseñadas para ilustrar ambos comportamientos:
+#
+#  "CPU_intensiva"  → usa siempre el quantum completo,
+#                     baja de nivel progresivamente
+#
+#  "Interactiva_1" y "Interactiva_2" → ráfagas cortas de CPU
+#                     intercaladas con E/S, permanecen en
+#                     niveles altos
+#
+#  "Mixta"         → empieza como interactiva pero termina
+#                     con una ráfaga larga
+# ============================================================
+
+RECURSO "Disco"
+RECURSO "Red"
+
+TAREA "CPU_intensiva"  INICIO=0  PRIORIDAD=0
+    [CPU,8]
+
+TAREA "Interactiva_1"  INICIO=0  PRIORIDAD=0
+    [CPU,1]
+    [1,2]
+    [CPU,1]
+    [1,2]
+    [CPU,1]
+    [1,2]
+    [CPU,1]
+
+TAREA "Interactiva_2"  INICIO=1  PRIORIDAD=0
+    [CPU,1]
+    [2,3]
+    [CPU,1]
+    [2,2]
+    [CPU,1]
+
+TAREA "Mixta"          INICIO=2  PRIORIDAD=0
+    [CPU,1]
+    [1,2]
+    [CPU,1]
+    [2,1]
+    [CPU,6]

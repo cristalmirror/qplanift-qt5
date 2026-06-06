@@ -1,0 +1,27 @@
+# ============================================================
+# Demostración de HRRN (Highest Response Ratio Next)
+#
+# HRRN favorece a las tareas que llevan más tiempo esperando
+# en relación a su tiempo de cómputo:
+#   ratio = (espera + computo) / computo
+#
+# Este conjunto muestra cómo HRRN evita la inanición:
+# - "Larga" llega primero pero tarda mucho → espera
+# - "Corta_1" y "Corta_2" llegan después y son breves
+# - Con el tiempo, el ratio de "Larga" sube hasta ganar
+# ============================================================
+
+TAREA "Larga"   INICIO=0  PRIORIDAD=0
+    [CPU,8]
+
+TAREA "Corta_1" INICIO=1  PRIORIDAD=0
+    [CPU,2]
+
+TAREA "Corta_2" INICIO=2  PRIORIDAD=0
+    [CPU,3]
+
+TAREA "Corta_3" INICIO=3  PRIORIDAD=0
+    [CPU,2]
+
+TAREA "Media"   INICIO=4  PRIORIDAD=0
+    [CPU,5]

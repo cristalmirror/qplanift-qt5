@@ -21,13 +21,16 @@
 #include "PlanifPF.hh" 
 #include "PlanifRR.hh" 
 #include "PlanifPFRR.hh" 
-#include "PlanifPFNE.hh" 
+#include "PlanifPFNE.hh"
+#include "PlanifHRRN.hh"
+#include "PlanifPFAging.hh"
+#include "PlanifMLFQ.hh"
 
 #include "Simulador.hh"
 #include "DescripcionCls.hh"
 
-static char *CPUS_ID[]={
-  "Descripción", 
+static const char *CPUS_ID[]={
+  "Descripciï¿½n", 
   "FCFS", 
   "SJF", 
   "SRTF",
@@ -35,15 +38,18 @@ static char *CPUS_ID[]={
   "Prioridades", 
   "Prioridades Expulsivas",
   "Prioridades + Round Robin",
-  (char*)0};
-static char *Recursos_ID[]={
-  "FCFS", 
+  "HRRN",
+  "Prioridades + Aging",
+  "MLFQ",
+  nullptr};
+static const char *Recursos_ID[]={
+  "FCFS",
   "SJF",
   "Prioridades",
-  (char*)0};
+  nullptr};
 
-char **SimuladorCls::PlanifCPU(){return CPUS_ID;}
-char **SimuladorCls::PlanifRecursos(){return Recursos_ID;}  
+const char **SimuladorCls::PlanifCPU(){return CPUS_ID;}
+const char **SimuladorCls::PlanifRecursos(){return Recursos_ID;}  
 
 void SimuladorCls::Simula
 (
@@ -60,7 +66,7 @@ void SimuladorCls::Simula
   
   //  lst_eventos.erase(lst_eventos.begin(),lst_eventos.end());
   switch (politica_cpu){
-  case 0:  // Descripción
+  case 0:  // Descripciï¿½n
     {
       DescripcionCls Desc;
       Desc.Descripcion(tbl_tareas, num_tareas, num_recursos, lst_eventos);
@@ -181,6 +187,57 @@ void SimuladorCls::Simula
       break;}
     case 2:{
       SistemaCls<PlanifPFRR,PlanifPFNE> Sis;
+      Sis.Simula(tbl_tareas, num_tareas, num_recursos, tiempo_simulacion, quantum, lst_eventos);
+      break;}
+    }
+    break;
+
+  case 8: // HRRN
+    switch(politica_recusos){
+    case 0: {
+      SistemaCls<PlanifHRRN,PlanifFCFS> Sis;
+      Sis.Simula(tbl_tareas, num_tareas, num_recursos, tiempo_simulacion, quantum, lst_eventos);
+      break;}
+    case 1:{
+      SistemaCls<PlanifHRRN,PlanifSJF> Sis;
+      Sis.Simula(tbl_tareas, num_tareas, num_recursos, tiempo_simulacion, quantum, lst_eventos);
+      break;}
+    case 2:{
+      SistemaCls<PlanifHRRN,PlanifPFNE> Sis;
+      Sis.Simula(tbl_tareas, num_tareas, num_recursos, tiempo_simulacion, quantum, lst_eventos);
+      break;}
+    }
+    break;
+
+  case 9: // Prioridades + Aging
+    switch(politica_recusos){
+    case 0: {
+      SistemaCls<PlanifPFAging,PlanifFCFS> Sis;
+      Sis.Simula(tbl_tareas, num_tareas, num_recursos, tiempo_simulacion, quantum, lst_eventos);
+      break;}
+    case 1:{
+      SistemaCls<PlanifPFAging,PlanifSJF> Sis;
+      Sis.Simula(tbl_tareas, num_tareas, num_recursos, tiempo_simulacion, quantum, lst_eventos);
+      break;}
+    case 2:{
+      SistemaCls<PlanifPFAging,PlanifPFNE> Sis;
+      Sis.Simula(tbl_tareas, num_tareas, num_recursos, tiempo_simulacion, quantum, lst_eventos);
+      break;}
+    }
+    break;
+
+  case 10: // MLFQ
+    switch(politica_recusos){
+    case 0: {
+      SistemaCls<PlanifMLFQ,PlanifFCFS> Sis;
+      Sis.Simula(tbl_tareas, num_tareas, num_recursos, tiempo_simulacion, quantum, lst_eventos);
+      break;}
+    case 1:{
+      SistemaCls<PlanifMLFQ,PlanifSJF> Sis;
+      Sis.Simula(tbl_tareas, num_tareas, num_recursos, tiempo_simulacion, quantum, lst_eventos);
+      break;}
+    case 2:{
+      SistemaCls<PlanifMLFQ,PlanifPFNE> Sis;
       Sis.Simula(tbl_tareas, num_tareas, num_recursos, tiempo_simulacion, quantum, lst_eventos);
       break;}
     }

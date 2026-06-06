@@ -23,6 +23,9 @@ SOURCES += \
     PlanifSRTF.cc \
     ProcesadorCls.cc \
     Simulador.cc \
+    PlanifHRRN.cc \
+    PlanifPFAging.cc \
+    PlanifMLFQ.cc \
     input_tab.c \
     linput.c
 
@@ -48,5 +51,8 @@ HEADERS += \
     ProcesadorCls.hh \
     Simulador.hh \
     SistemaCls.hh \
+    PlanifHRRN.hh \
+    PlanifPFAging.hh \
+    PlanifMLFQ.hh \
     input_tab.h
 LIBS += -lfl

@@ -28,7 +28,7 @@
   #define DEBUG
 
 #define SALIR  num_tareas=-1; \
-  num_recursos=0; \     
+  num_recursos=0;      
 
 
 
@@ -105,21 +105,21 @@ b_linea_tarea: TAREA IDEN
 b_atributos:  PERIODO '=' NUM b_atributos 
               { 
 #ifdef DEBUG
-		printf("Periodo= %d ",$3);
+		printf("Periodo= %ld ",$3);
 #endif
 		Tareas[num_tareas].periodo = (tiempo_t) $3;
 	      }
              | OFFSET '=' NUM  b_atributos 
               {
 #ifdef DEBUG
-		printf("Offset= %d ",$3);
+		printf("Offset= %ld ",$3);
 #endif
 		Tareas[num_tareas].llegada = (tiempo_t) $3;
 	      } 
              |  PRIORIDAD '=' NUM  b_atributos
               {
 #ifdef DEBUG
-		printf("Prio= %d ",$3);
+		printf("Prio= %ld ",$3);
 #endif
 		Tareas[num_tareas].prioridad = $3;
 	      } 
@@ -143,13 +143,13 @@ b_patron_uso:  '['  NUM  ',' NUM ']'
 	       if ($2 > num_recursos){
 		 if (y_error == -1){
 		   y_error=$2;
-		   sprintf(y_mensaje,"Recurso %d no definido\nen l�nea %d",$2,linenumber);
+		   sprintf(y_mensaje,"Recurso %ld no definido\nen l�nea %d",$2,linenumber);
 		 }
 		 SALIR;
 	       }
 
 #ifdef DEBUG
-	       printf("(%d)<%d -- %d> \n",*r, $2, $4);
+	       printf("(%d)<%ld -- %ld> \n",*r, $2, $4);
 #endif
 	       Tareas[num_tareas].subtarea[*r].recurso = $2;
 	       Tareas[num_tareas].subtarea[*r].tiempo = $4;
@@ -167,12 +167,12 @@ int  yyerror(char *s){
     sprintf(y_mensaje,"Error: %s\nEn la l�nea %d",s,linenumber);
   }
  SALIR;
-  //  return;
+  return 0;
 }
 
 
 int   Parsea_fichero(const char *name){
-  int  x;
+    /*int  x;*/
 
 
 

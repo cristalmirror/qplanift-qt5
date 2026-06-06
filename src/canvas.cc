@@ -41,7 +41,8 @@ Canvas::Canvas( QWidget *parent, const char *name )
 }
 
 
-void Canvas::resizeEvent( QResizeEvent * ) {
+void Canvas::resizeEvent( QResizeEvent *e ) {
+  Q_UNUSED(e);
   area_de_nombres->setGeometry(0, 0, 100, height());
   area_de_cronograma->setGeometry(100, 0, width()-100, height());
   hscroll->setGeometry(0, height()-16, width()-100, 16);
@@ -154,7 +155,7 @@ void Canvas::Dibuja(const evento_c &evento) {
   mat_escalado.translate(scroll, ESPACIO_REGLA);
   mat_escalado.scale(zoom, 1.0);
 
-  int ultimo_punto = evento.Inicio();
+  tiempo_t ultimo_punto = evento.Inicio();
   if (ultimo_punto > final_simulacion)
     final_simulacion = ultimo_punto;
 
@@ -201,4 +202,4 @@ void Canvas::Dibuja(const evento_c &evento) {
 void Canvas::Dibuja() {}
 
 
-void Canvas::paintEvent( QPaintEvent * ) {}
+void Canvas::paintEvent( QPaintEvent *e ) { Q_UNUSED(e); }

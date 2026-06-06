@@ -1,0 +1,42 @@
+# ============================================================
+# Demostración de Prioridades + Aging (envejecimiento)
+#
+# El aging incrementa la prioridad de una tarea a medida
+# que pasa tiempo sin ser atendida, evitando la inanición
+# de tareas de baja prioridad.
+#
+# Sin aging: "Baja_prio" nunca correría porque siempre
+#            llegan tareas de mayor prioridad.
+# Con aging: "Baja_prio" va acumulando prioridad hasta
+#            poder ejecutarse.
+#
+# Prioridades: mayor número = mayor prioridad
+#   "Alta_1"    PRIORIDAD=4  → siempre preferida al inicio
+#   "Alta_2"    PRIORIDAD=3
+#   "Media_1"   PRIORIDAD=2
+#   "Media_2"   PRIORIDAD=2
+#   "Baja_prio" PRIORIDAD=1  → sufriría inanición sin aging
+# ============================================================
+
+RECURSO "Disco"
+
+TAREA "Alta_1"    INICIO=0  PRIORIDAD=4
+    [CPU,3]
+    [1,2]
+    [CPU,2]
+
+TAREA "Alta_2"    INICIO=0  PRIORIDAD=3
+    [CPU,2]
+    [1,3]
+    [CPU,3]
+
+TAREA "Media_1"   INICIO=1  PRIORIDAD=2
+    [CPU,4]
+
+TAREA "Media_2"   INICIO=2  PRIORIDAD=2
+    [CPU,2]
+    [1,1]
+    [CPU,2]
+
+TAREA "Baja_prio" INICIO=0  PRIORIDAD=1
+    [CPU,5]

@@ -3,6 +3,8 @@
 extern int linenumber;
 %}
 
+%option noinput nounput
+
 %%
 
 [\n] { linenumber++; }

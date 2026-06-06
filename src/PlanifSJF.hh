@@ -62,7 +62,7 @@ public:
   virtual
   int			TareaExpulsada 
   (
-   tarea_activa_t *	tarea
+   tarea_activa_t *	/*tarea*/
    )
     {
       return OK;		// No se expulsan tareas 

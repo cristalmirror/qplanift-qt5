@@ -105,7 +105,7 @@ public:
   // PRE: !(EstaLibre())
   int			PrioridadTarea
   (
-   tiempo_t		tiempo_actual
+   tiempo_t		/*tiempo_actual*/
    ) const 
     {
       return tarea_ejecucion->prioridad;

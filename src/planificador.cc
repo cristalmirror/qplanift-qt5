@@ -91,7 +91,7 @@ Planificador::Planificador(int contador)
     controlTools = addToolBar("Herramientas");
 
     seleccion_planificadores = new QComboBox();
-    char **NombrePlanificadores = Simulator.PlanifCPU();
+    const char **NombrePlanificadores = Simulator.PlanifCPU();
     for (x=0; NombrePlanificadores[x]; x++)
       seleccion_planificadores->addItem( NombrePlanificadores[x] );
     connect( seleccion_planificadores, SIGNAL(activated(int)), SLOT(planificador_elegido(int)) );
@@ -270,9 +270,9 @@ struct dibuja_canvas {
     if (!pap || ev.Inicio() < (tiempo_t)fin)
       cv.Dibuja(ev);
   }
-  bool pap;
-  int  fin;
-  Canvas &cv;
+    Canvas &cv;
+    bool pap;
+    int  fin;
 };
 
 
@@ -290,11 +290,11 @@ void Planificador::actualiza(bool hay_que_limpiar) {
     for (int y=0; y < Tareas[x].Nsubtareas; y++)
       computo += Tareas[x].subtarea[y].recurso ? 0 : Tareas[x].subtarea[y].tiempo;
 
-    sprintf(cade, "Prio:\t%d\nLlegada:\t%d\nPerid:\t%d\nCómputo:\t%d",
+    sprintf(cade, "Prio:\t%d\nLlegada:\t%ld\nPerid:\t%ld\nCómputo:\t%ld",
             Tareas[x].prioridad,
             Tareas[x].llegada,
             Tareas[x].periodo,
-            (int)computo);
+            computo);
     canvas->Dibuja(x, Tareas[x].nombre, cade);
   }
 
@@ -334,7 +334,8 @@ void Planificador::closeDoc() {
   close();
 }
 
-void Planificador::closeEvent(QCloseEvent *) {
+void Planificador::closeEvent(QCloseEvent *e) {
+  Q_UNUSED(e);
   if ( spawnedPlanificadores && spawnedPlanificadores->indexOf(this) != -1 ) {
     delete this;
   } else {
@@ -366,7 +367,7 @@ void Planificador::toggleStatusBar() {
 
 void Planificador::planificador_elegido(int plan) {
   politica_planificador_actual = plan;
-  seleccion_quantum->setEnabled( (plan==4) || (plan==7) );
+  seleccion_quantum->setEnabled( (plan==4) || (plan==7) || (plan==10) );
   Simulator.Simula(politica_planificador_actual, politica_recurso_actual,
                    Tareas, num_tareas, num_recursos, 500, quantum_actual, lst_eventos);
   actualiza(true);

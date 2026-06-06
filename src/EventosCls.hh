@@ -74,11 +74,11 @@ public:
     t_evento(ev.Tipo()) 
     {};
   
-  const int Identificador () const { return ident; };
-  const int Recurso () const { return recur; };
-  const tiempo_t Inicio () const { return comienzo; };
-  const tiempo_t Fin () const { return final; };
-  const tipo_evento_t Tipo () const { return t_evento; };
+  int Identificador () const { return ident; };
+  int Recurso () const { return recur; };
+  tiempo_t Inicio () const { return comienzo; };
+  tiempo_t Fin () const { return final; };
+  tipo_evento_t Tipo () const { return t_evento; };
   
 private:
   int		ident;		// Identificador de tarea

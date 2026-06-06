@@ -31,7 +31,7 @@ void DescripcionCls::Descripcion
 ( 
  tarea_c *		tbl_tareas,
  int			num_tareas,
- int			num_recursos,
+ int			/*num_recursos*/,
  EventosCls&		lst_eventos
  )
 {

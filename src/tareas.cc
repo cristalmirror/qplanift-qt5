@@ -27,16 +27,16 @@ Tareas_ventana::Tareas_ventana() : QTreeWidget(NULL) {
     sprintf(cade, "%d", Tareas[x].prioridad);
     new TareaViewItem(tmp, "Prioridad", cade);
 
-    sprintf(cade, "%d", Tareas[x].periodo);
+    sprintf(cade, "%ld", Tareas[x].periodo);
     new TareaViewItem(tmp, "Periodo", cade);
 
-    sprintf(cade, "%d", Tareas[x].llegada);
+    sprintf(cade, "%ld", Tareas[x].llegada);
     new TareaViewItem(tmp, "Llegada", cade);
 
     sub = new QTreeWidgetItem(tmp, QStringList("Secuencia de Ejecución"));
     for (int y=0; y < Tareas[x].Nsubtareas; y++) {
       char str_computo[100];
-      sprintf(str_computo, "%d", Tareas[x].subtarea[y].tiempo);
+      sprintf(str_computo, "%ld", Tareas[x].subtarea[y].tiempo);
       if (Tareas[x].subtarea[y].recurso == 0) {
         new TareaViewItem(sub, "CPU", str_computo);
       } else {
