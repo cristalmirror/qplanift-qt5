@@ -20,9 +20,10 @@ RUN apt-get update && apt-get install -y \
 # ── Compilar ──────────────────────────────────────────────────────────────────
 
 WORKDIR /src
-COPY src/ .
+COPY src/ /src/
+COPY include/ /include/
 
-RUN bison input.y -o input_tab.c \
+RUN bison --defines=input_tab.h input.y -o input_tab.c \
  && flex -o linput.c linput.l \
  && cp input_tab.h input.tab.h \
  && qmake qplanif.pro \

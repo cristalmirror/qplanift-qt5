@@ -5,6 +5,8 @@ CONFIG += c++11
 TARGET = qplanif
 TEMPLATE = app
 
+INCLUDEPATH += ../include
+
 SOURCES += \
     qplanif.cc \
     planificador.cc \
@@ -30,29 +32,29 @@ SOURCES += \
     linput.c
 
 HEADERS += \
-    planificador.hh \
-    canvas.hh \
-    editor.hh \
-    ayuda.hh \
-    tareas.hh \
-    tipos.h \
-    CargaCls.hh \
-    ColasCls.hh \
-    DescripcionCls.hh \
-    EventosCls.hh \
-    PlanifFCFS.hh \
-    PlanifPF.hh \
-    PlanifPFNE.hh \
-    PlanifPFRR.hh \
-    PlanifRR.hh \
-    PlanifSJF.hh \
-    PlanifSRTF.hh \
-    PlanificadorCls.hh \
-    ProcesadorCls.hh \
-    Simulador.hh \
-    SistemaCls.hh \
-    PlanifHRRN.hh \
-    PlanifPFAging.hh \
-    PlanifMLFQ.hh \
-    input_tab.h
+    ../include/planificador.hh \
+    ../include/canvas.hh \
+    ../include/editor.hh \
+    ../include/ayuda.hh \
+    ../include/tareas.hh \
+    ../include/tipos.h \
+    ../include/CargaCls.hh \
+    ../include/ColasCls.hh \
+    ../include/DescripcionCls.hh \
+    ../include/EventosCls.hh \
+    ../include/PlanifFCFS.hh \
+    ../include/PlanifPF.hh \
+    ../include/PlanifPFNE.hh \
+    ../include/PlanifPFRR.hh \
+    ../include/PlanifRR.hh \
+    ../include/PlanifSJF.hh \
+    ../include/PlanifSRTF.hh \
+    ../include/PlanificadorCls.hh \
+    ../include/ProcesadorCls.hh \
+    ../include/Simulador.hh \
+    ../include/SistemaCls.hh \
+    ../include/PlanifHRRN.hh \
+    ../include/PlanifPFAging.hh \
+    ../include/PlanifMLFQ.hh \
+    ../include/input_tab.h
 LIBS += -lfl

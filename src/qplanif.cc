@@ -5,7 +5,7 @@ int main( int argc, char **argv ) {
     QApplication a( argc, argv );
 
     Planificador *mw = new Planificador(1);
-    mw->setWindowTitle("Simulador de algoritmos de planificación  (Software Libre, GPL)");
+    mw->setWindowTitle("qplanif-qt5 - Simulador de Planificación 2026");
     mw->show();
 
     if (argc > 1)

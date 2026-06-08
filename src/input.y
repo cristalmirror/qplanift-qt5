@@ -28,7 +28,7 @@
   #define DEBUG
 
 #define SALIR  num_tareas=-1; \
-  num_recursos=0;      
+  num_recursos=0;
 
 
 
@@ -50,13 +50,13 @@
 %%
 
 
-b_inicio : b_recursos {} b_tareas  {}  ; 
+b_inicio : b_recursos b_tareas  ;
 
-b_recursos :  b_recursos {} b_linea_recurso {}
+b_recursos :  b_recursos b_linea_recurso
 	|  {}
 	;
 
-b_tareas : b_tareas {} b_linea_tarea {}
+b_tareas : b_tareas b_linea_tarea
        | {}
        ;
 
@@ -99,7 +99,6 @@ b_linea_tarea: TAREA IDEN
 		 Tareas[num_tareas].Nsubtareas=Tareas[num_tareas].prioridad=0;
 
 	       } b_atributos b_patron_uso
-| {}
 ;
 
 b_atributos:  PERIODO '=' NUM b_atributos 
@@ -143,7 +142,7 @@ b_patron_uso:  '['  NUM  ',' NUM ']'
 	       if ($2 > num_recursos){
 		 if (y_error == -1){
 		   y_error=$2;
-		   sprintf(y_mensaje,"Recurso %ld no definido\nen l�nea %d",$2,linenumber);
+		   sprintf(y_mensaje,"Recurso %ld no definido en linea %d\n",$2,linenumber);
 		 }
 		 SALIR;
 	       }
@@ -154,8 +153,8 @@ b_patron_uso:  '['  NUM  ',' NUM ']'
 	       Tareas[num_tareas].subtarea[*r].recurso = $2;
 	       Tareas[num_tareas].subtarea[*r].tiempo = $4;
 	       (*r)++;
-	     }  b_patron_uso
-	     | {}
+	     }  b_patron_uso { $$ = 0; }
+	     | { $$ = 0; }
              ;
 
 
@@ -172,7 +171,6 @@ int  yyerror(char *s){
 
 
 int   Parsea_fichero(const char *name){
-    /*int  x;*/
 
 
 
